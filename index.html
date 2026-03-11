@@ -149,6 +149,43 @@
 
     .hero-cta { display: flex; gap: 16px; align-items: center; }
 
+    /* HERO ENTRANCE ANIMATIONS */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .availability-badge { animation: heroFadeUp 0.6s 0s both; }
+    .hero-left .hero-tag  { animation: heroFadeUp 0.7s 0.15s both; }
+    .hero-left .hero-title{ animation: heroFadeUp 0.8s 0.3s  both; }
+    .hero-left .hero-desc { animation: heroFadeUp 0.7s 0.5s  both; }
+    .hero-left .hero-cta  { animation: heroFadeUp 0.7s 0.65s both; }
+
+    /* AVAILABILITY BADGE */
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 20px;
+      padding: 5px 14px 5px 10px;
+      font-size: 0.72rem;
+      color: var(--accent);
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .availability-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #6abf69;
+      flex-shrink: 0;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(106,191,105,0.5); }
+      50%       { box-shadow: 0 0 0 5px rgba(106,191,105,0); }
+    }
+
     .btn-primary {
       background: var(--black);
       color: var(--white);
@@ -198,7 +235,7 @@
 
     .hero-photo-wrap {
       position: relative;
-      margin-bottom: 32px;
+      flex: 1;
       overflow: hidden;
     }
     .hero-photo-wrap::after {
@@ -212,8 +249,7 @@
     }
     .hero-photo {
       width: 100%;
-      aspect-ratio: 3/4;
-      max-height: 460px;
+      height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
@@ -725,6 +761,10 @@
 <!-- HERO -->
 <section class="hero" style="padding:0;">
   <div class="hero-left">
+    <div class="availability-badge">
+      <span class="availability-dot"></span>
+      Aktuálně přijímám projekty
+    </div>
     <div class="hero-tag">Webový vývojář · Ostrava</div>
     <h1 class="hero-title">
       Web, který<br><em>dělá dojem.</em>
@@ -765,10 +805,10 @@
       <div class="section-tag">O mně</div>
       <h2 class="section-title">Kliment.<br>Ne agentura.</h2>
       <p>
-        Jmenuji se Kliment a stavím weby tak, jak bych je chtěl mít sám. Čisté, rychlé a takové, které skutečně pracují pro váš byznys.
+        Začal jsem jako klient. Mám vlastní účetní společnost a pokaždé, když jsem potřeboval web, dostával jsem nabídky za vysoké ceny s termínem přes tři měsíce. Tak jsem se rozhodl naučit to sám.
       </p>
       <p>
-        Pracuji přímo s klientem. Žádní prostředníci, žádné ztracené e-maily. Víte přesně co dostanete, kdy to dostanete a za kolik.
+        Dnes beru jen tolik projektů, kolik dokáži skutečně doručit v termínu. Pracujete přímo se mnou a výsledek přijde přesně tak, jak jsme se domluvili.
       </p>
     </div>
     <div class="about-values">
@@ -776,21 +816,21 @@
         <div class="value-icon">⚡</div>
         <div>
           <div class="value-title">Rychlost</div>
-          <div class="value-desc">14 dní od zadání k hotovému webu. Žádné čekání na měsíce.</div>
+          <div class="value-desc">14 dní od zahájení k hotovému webu. Protože vím, jaké je čekat.</div>
         </div>
       </div>
       <div class="value-item">
         <div class="value-icon">✦</div>
         <div>
-          <div class="value-title">Čistý design</div>
-          <div class="value-desc">Elegantní, přehledné, na míru vaší značce. Bez šablon, bez kompromisů.</div>
+          <div class="value-title">Na míru</div>
+          <div class="value-desc">Každý řádek kódu psaný ručně. Žádné šablony, žádné zkratky.</div>
         </div>
       </div>
       <div class="value-item">
         <div class="value-icon">🤝</div>
         <div>
           <div class="value-title">Garance</div>
-          <div class="value-desc">Pokud nebudete spokojeni, vrátím celou částku. Bez otázek, bez podmínek.</div>
+          <div class="value-desc">Nespokojenost? Vrátím celou částku. Bez otázek, bez podmínek.</div>
         </div>
       </div>
     </div>
@@ -1219,14 +1259,23 @@
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'translateY(0)';
+        observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.12 });
 
-  document.querySelectorAll('.value-item, .service-card, .portfolio-card, .review-card').forEach(el => {
+  const gridItems = new Set(['service-card', 'portfolio-card', 'value-item', 'addon-toggle', 'type-card']);
+
+  document.querySelectorAll(
+    '.value-item, .service-card, .portfolio-card, .calc-block, .addon-toggle, .type-card, .section-title, .section-tag, .about-text p, .contact-subtitle'
+  ).forEach(el => {
+    const cls = [...el.classList].find(c => gridItems.has(c));
+    const delay = cls
+      ? Array.from(el.parentElement.children).indexOf(el) * 0.09
+      : 0;
     el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    el.style.transform = 'translateY(22px)';
+    el.style.transition = `opacity 0.6s ${delay}s ease, transform 0.6s ${delay}s ease`;
     observer.observe(el);
   });
 </script>
