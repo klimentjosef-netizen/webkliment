@@ -700,6 +700,60 @@
 
     .calc-cta { width: 100%; justify-content: center; }
 
+    /* Delivery badge */
+    .delivery-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 400;
+    }
+    .delivery-icon { font-size: 1rem; }
+
+    /* Tooltip */
+    .tooltip-wrap { position: relative; display: inline-flex; align-items: center; margin-left: 5px; vertical-align: middle; }
+    .tooltip-icon {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 1px solid var(--gray);
+      color: var(--gray);
+      font-size: 0.6rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      font-style: normal;
+      line-height: 1;
+    }
+    .tooltip-bubble {
+      display: none;
+      position: absolute;
+      left: 20px;
+      top: -8px;
+      width: 220px;
+      background: var(--black);
+      color: #ccc;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #2a2a2a;
+      z-index: 10;
+      font-weight: 300;
+      pointer-events: none;
+    }
+    .tooltip-wrap:hover .tooltip-bubble { display: block; }
+
+    /* Price counter transition */
+    .price-value { transition: color 0.2s; }
+
     /* RESPONSIVE */
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
@@ -974,7 +1028,7 @@
               <input type="checkbox" name="calc-addon" value="7000" data-label="Blog / aktuality" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
-                  <span class="addon-name">Blog / aktuality</span>
+                  <span class="addon-name">Blog / aktuality <span class="tooltip-wrap"><i class="tooltip-icon">i</i><span class="tooltip-bubble">Vlastní sekce s články. Publikujete nový obsah sami bez programátora. Skvělé pro SEO.</span></span></span>
                   <span class="addon-desc">Sekce pro novinky a články</span>
                   <span class="addon-price">+7 000 Kč</span>
                 </div>
@@ -985,7 +1039,7 @@
               <input type="checkbox" name="calc-addon" value="8000" data-label="Správa obsahu (CMS)" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
-                  <span class="addon-name">Správa obsahu (CMS)</span>
+                  <span class="addon-name">Správa obsahu (CMS) <span class="tooltip-wrap"><i class="tooltip-icon">i</i><span class="tooltip-bubble">Jednoduchý admin panel — měníte texty, fotky a ceny sami. Žádné volání vývojáře pro každou změnu.</span></span></span>
                   <span class="addon-desc">Editujte texty a fotky sami, bez vývojáře</span>
                   <span class="addon-price">+8 000 Kč</span>
                 </div>
@@ -996,7 +1050,7 @@
               <input type="checkbox" name="calc-addon" value="7000" data-label="Vícejazyčná verze" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
-                  <span class="addon-name">Vícejazyčná verze</span>
+                  <span class="addon-name">Vícejazyčná verze <span class="tooltip-wrap"><i class="tooltip-icon">i</i><span class="tooltip-bubble">Celý web ve dvou jazykových mutacích. Vhodné pro firmy se zahraničními zákazníky.</span></span></span>
                   <span class="addon-desc">Web v češtině i angličtině</span>
                   <span class="addon-price">+7 000 Kč</span>
                 </div>
@@ -1034,13 +1088,17 @@
         <div class="price-label">Orientační cena</div>
         <div class="price-value" id="calc-price">od 15 000 Kč</div>
         <div class="price-note">Nezávazný odhad. Přesnou nabídku dostanete do 24 hodin.</div>
+        <div class="delivery-badge">
+          <span class="delivery-icon">⏱</span>
+          <span id="delivery-text">Odhadovaná doba: 7–14 dní</span>
+        </div>
         <div class="calc-breakdown" id="calc-breakdown">
           <div class="breakdown-item">
             <span class="breakdown-name">Microsite / Landing page</span>
             <span class="breakdown-price">15 000 Kč</span>
           </div>
         </div>
-        <a href="#kontakt" class="btn-primary calc-cta" id="calc-cta">Chci tuto konfiguraci →</a>
+        <a href="#kontakt" class="btn-primary calc-cta" id="calc-cta">Poptat tento projekt →</a>
         <div class="calc-included">
           <strong>Vždy v ceně:</strong> kontaktní formulář, SEO základ, mobilní verze, nasazení webu, 30 dní podpory po spuštění
         </div>
@@ -1226,9 +1284,36 @@
   }
 
   // CALCULATOR
-  // Ceny — upravte dle vasich skutecnych hodnot
   function formatKc(n) {
     return n.toLocaleString('cs-CZ') + ' Kč';
+  }
+
+  let _calcDisplayedPrice = 15000;
+  let _calcRafId = null;
+
+  function animatePrice(target) {
+    if (_calcRafId) cancelAnimationFrame(_calcRafId);
+    const start = _calcDisplayedPrice;
+    const startTime = performance.now();
+    const duration = 350;
+    const el = document.getElementById('calc-price');
+    function tick(now) {
+      const t = Math.min((now - startTime) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const cur = Math.round(start + (target - start) * ease);
+      el.textContent = 'od ' + formatKc(cur);
+      if (t < 1) { _calcRafId = requestAnimationFrame(tick); }
+      else { _calcDisplayedPrice = target; }
+    }
+    _calcRafId = requestAnimationFrame(tick);
+  }
+
+  function getDelivery(total, addonsCount, express) {
+    if (express) return '5–7 dní';
+    if (total < 22000 && addonsCount === 0) return '7–10 dní';
+    if (total < 30000) return '10–14 dní';
+    if (total < 45000) return '2–4 týdny';
+    return '4–8 týdnů';
   }
 
   function updateCalc() {
@@ -1266,8 +1351,14 @@
       lines.push({ name: timeline.dataset.label, price: v });
     }
 
-    // Aktualizace ceny
-    document.getElementById('calc-price').textContent = 'od ' + formatKc(total);
+    // Animovaná cena
+    animatePrice(total);
+
+    // Doba realizace
+    const addonsCount = document.querySelectorAll('input[name="calc-addon"]:checked').length;
+    const isExpress = timeline && parseInt(timeline.value) > 0;
+    const deliveryEl = document.getElementById('delivery-text');
+    if (deliveryEl) deliveryEl.textContent = 'Odhadovaná doba: ' + getDelivery(total, addonsCount, isExpress);
 
     // Rozpad ceny
     document.getElementById('calc-breakdown').innerHTML = lines.map((l, i) =>
