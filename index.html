@@ -299,10 +299,11 @@
 
     /* ABOUT */
     .about {
-      display: flex;
-      flex-direction: column;
-      gap: 52px;
-      max-width: 860px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 80px;
+      align-items: start;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
@@ -315,18 +316,20 @@
     .about-text p:last-child { margin-bottom: 0; }
 
     .about-benefits {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 100px;
     }
     .benefit-card {
-      padding: 28px 24px;
+      padding: 24px;
       border: 1px solid var(--light-gray);
       border-radius: 8px;
       transition: border-color 0.2s;
     }
     .benefit-card:hover { border-color: var(--accent); }
-    .benefit-title { font-weight: 500; margin-bottom: 8px; font-size: 0.95rem; }
+    .benefit-title { font-weight: 500; margin-bottom: 6px; font-size: 0.95rem; }
     .benefit-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.65; }
 
     /* SERVICES */
@@ -700,7 +703,8 @@
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
-      .about-benefits { grid-template-columns: 1fr; }
+      .about { grid-template-columns: 1fr; gap: 40px; }
+      .about-benefits { position: static; }
       .services-grid { grid-template-columns: 1fr; }
       .portfolio-grid { grid-template-columns: 1fr; }
       .reviews-grid { grid-template-columns: 1fr; }
@@ -1310,9 +1314,12 @@
     '.benefit-card, .service-card, .portfolio-card, .calc-block, .addon-toggle, .type-card, .section-title, .section-tag, .about-text p, .contact-subtitle'
   ).forEach(el => {
     const cls = [...el.classList].find(c => gridItems.has(c));
+    const isAboutP = el.matches('.about-text p');
     const delay = cls
       ? Array.from(el.parentElement.children).indexOf(el) * 0.09
-      : 0;
+      : isAboutP
+        ? Array.from(el.parentElement.children).indexOf(el) * 0.12
+        : 0;
     el.style.opacity = '0';
     el.style.transform = 'translateY(22px)';
     el.style.transition = `opacity 0.6s ${delay}s ease, transform 0.6s ${delay}s ease`;
