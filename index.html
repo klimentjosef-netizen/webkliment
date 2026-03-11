@@ -237,6 +237,7 @@
       position: relative;
       flex: 1;
       min-height: 0;
+      max-height: 48vh;
       overflow: hidden;
     }
     .hero-photo-wrap::after {
@@ -245,7 +246,7 @@
       inset: 0;
       background:
         linear-gradient(to right, var(--black) 0%, transparent 20%),
-        linear-gradient(to top, var(--black) 0%, transparent 72%);
+        linear-gradient(to top, var(--black) 0%, var(--black) 12%, transparent 65%);
       pointer-events: none;
     }
     .hero-photo {
