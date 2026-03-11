@@ -1300,7 +1300,7 @@
   <h2 class="section-title">Máte projekt?<br>Pojďme na to.</h2>
   <p class="contact-subtitle">Napište co potřebujete. Odpovím do 24 hodin s přesnou cenou a termínem.</p>
 
-  <form class="contact-form" action="https://formspree.io/f/xbdzopzd" method="POST">
+  <form class="contact-form" onsubmit="handleSubmit(event)">
     <div class="form-row">
       <input type="text" name="name" class="form-input" placeholder="Jméno" required />
       <input type="email" name="email" class="form-input" placeholder="E-mail" required />
@@ -1381,25 +1381,17 @@
     btn.textContent = 'Odesílám...';
     btn.disabled = true;
 
+    const formData = new FormData(form);
     const budgetSel = document.getElementById('budget-input');
-    const budgetVal = budgetSel ? budgetSel.value : '';
-    const budgetLabel = budgetVal === 'calc'
-      ? 'Vypočítáno v kalkulačce: od ' + _calcTotal.toLocaleString('cs-CZ') + ' Kč'
-      : budgetVal;
-
-    const data = {
-      name:    form.querySelector('[name="name"]').value,
-      email:   form.querySelector('[name="email"]').value,
-      subject: form.querySelector('[name="subject"]').value,
-      budget:  budgetLabel,
-      message: form.querySelector('[name="message"]').value,
-    };
+    if (budgetSel && budgetSel.value === 'calc') {
+      formData.set('budget', 'Vypočítáno v kalkulačce: od ' + _calcTotal.toLocaleString('cs-CZ') + ' Kč');
+    }
 
     try {
       const res = await fetch('https://formspree.io/f/xbdzopzd', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
+        headers: { 'Accept': 'application/json' },
+        body: formData
       });
       if (res.ok) {
         btn.textContent = 'Odesláno ✓';
