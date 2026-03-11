@@ -197,16 +197,18 @@
     }
 
     .hero-photo {
-      width: 100%;
+      width: 85%;
       aspect-ratio: 3/4;
-      max-height: 500px;
+      max-height: 400px;
       object-fit: cover;
+      object-position: center top;
       border-radius: 8px;
       display: block;
-      margin-bottom: 32px;
+      margin: 0 auto 32px;
       position: relative;
       z-index: 1;
       background: #1a1616;
+      filter: brightness(0.92) saturate(0.9);
     }
 
     .hero-stats {
@@ -532,7 +534,10 @@
     }
     .type-card-inner:hover { border-color: #c8c0b8; }
     .type-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
-    .type-desc { font-size: 0.78rem; color: var(--gray); margin-bottom: 12px; }
+    .type-desc { font-size: 0.78rem; color: var(--gray); margin-bottom: 8px; }
+    .type-bullets { list-style: none; padding: 0; margin: 0 0 12px; }
+    .type-bullets li { font-size: 0.72rem; color: var(--gray); padding: 2px 0; }
+    .type-bullets li::before { content: "+ "; color: var(--accent); font-weight: 600; }
     .type-price { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--accent); }
 
     /* Page count & timeline options */
@@ -577,7 +582,10 @@
     .addon-inner:hover { border-color: #c8c0b8; }
     .addon-left { display: flex; flex-direction: column; gap: 2px; }
     .addon-name { font-size: 0.88rem; font-weight: 400; }
+    .addon-desc { font-size: 0.7rem; color: var(--gray); font-weight: 300; }
     .addon-price { font-size: 0.75rem; color: var(--gray); }
+    .calc-included { font-size: 0.72rem; color: var(--gray); margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--light-gray); line-height: 1.7; }
+    .calc-included strong { color: var(--black); font-weight: 500; }
     .addon-check {
       width: 20px; height: 20px;
       border: 1.5px solid var(--light-gray);
@@ -733,8 +741,8 @@
         <div class="stat-label">Garance spokojenosti</div>
       </div>
       <div class="stat-item">
-        <div class="stat-number">0<span>šablon</span></div>
-        <div class="stat-label">Každý web od základu</div>
+        <div class="stat-number">24<span>h</span></div>
+        <div class="stat-label">Nabídka do 24 hodin</div>
       </div>
     </div>
   </div>
@@ -829,46 +837,65 @@
           <div class="calc-block-title">01 &nbsp;Typ projektu</div>
           <div class="project-types">
             <label class="type-card">
-              <input type="radio" name="calc-project" value="12000" data-label="Microsite / Landing page" checked onchange="updateCalc()">
+              <input type="radio" name="calc-project" value="15000" data-label="Microsite / Landing page" checked onchange="updateCalc()">
               <div class="type-card-inner">
                 <div class="type-name">Microsite</div>
-                <div class="type-desc">Jednostránkový web</div>
-                <div class="type-price">12 000 Kč</div>
+                <div class="type-desc">Kampaň, produkt nebo akce. Jeden cíl, jedna stránka.</div>
+                <ul class="type-bullets">
+                  <li>Jednostránkový design</li>
+                  <li>Jasná výzva k akci</li>
+                  <li>Ideální pro kampane</li>
+                </ul>
+                <div class="type-price">15 000 Kč</div>
               </div>
             </label>
             <label class="type-card">
-              <input type="radio" name="calc-project" value="20000" data-label="Prezentační web" onchange="updateCalc()">
+              <input type="radio" name="calc-project" value="22000" data-label="Prezentační web" onchange="updateCalc()">
               <div class="type-card-inner">
                 <div class="type-name">Prezentační web</div>
-                <div class="type-desc">Vícestránkový web</div>
-                <div class="type-price">20 000 Kč</div>
+                <div class="type-desc">Seriózní online vizitka vaší firmy s více sekcemi.</div>
+                <ul class="type-bullets">
+                  <li>Více stránek a sekcí</li>
+                  <li>Galerie, O nás, Kontakt...</li>
+                  <li>SEO a rychlé načítání</li>
+                </ul>
+                <div class="type-price">22 000 Kč</div>
               </div>
             </label>
             <label class="type-card">
-              <input type="radio" name="calc-project" value="18000" data-label="Modernizace / redesign" onchange="updateCalc()">
+              <input type="radio" name="calc-project" value="20000" data-label="Modernizace / redesign" onchange="updateCalc()">
               <div class="type-card-inner">
                 <div class="type-name">Modernizace</div>
-                <div class="type-desc">Redesign starého webu</div>
-                <div class="type-price">18 000 Kč</div>
+                <div class="type-desc">Starý web, který nevypadá dobře? Nový design bez ztráty obsahu.</div>
+                <ul class="type-bullets">
+                  <li>Nový design, stejný obsah</li>
+                  <li>Mobilní verze a rychlost</li>
+                  <li>SEO optimalizace</li>
+                </ul>
+                <div class="type-price">20 000 Kč</div>
               </div>
             </label>
           </div>
         </div>
 
-        <!-- 02: Počet stránek -->
+        <!-- 02: Rozsah webu -->
         <div class="calc-block" id="calc-pages-block">
-          <div class="calc-block-title">02 &nbsp;Počet stránek</div>
+          <div class="calc-block-title">02 &nbsp;Rozsah webu</div>
+          <p style="font-size:0.78rem; color:var(--gray); margin: -8px 0 14px;">Stránky = Domů, O nás, Služby, Kontakt atd. Každá sekce s vlastní navigací.</p>
           <div class="page-options">
             <label class="page-option">
               <input type="radio" name="calc-pages" value="0" data-label="" checked onchange="updateCalc()">
-              <div class="page-option-inner">1 až 3</div>
+              <div class="page-option-inner">
+                1 až 3<br>
+                <span style="font-size:0.72rem;color:var(--gray)">Domů, Kontakt + 1</span>
+              </div>
             </label>
             <label class="page-option">
-              <input type="radio" name="calc-pages" value="6000" data-label="Navíc stránek (4 až 6)" onchange="updateCalc()">
+              <input type="radio" name="calc-pages" value="6000" data-label="Rozsáhlejší web (4 až 6 stránek)" onchange="updateCalc()">
               <div class="page-option-inner">4 až 6<br><span style="font-size:0.72rem;color:var(--gray)">+6 000 Kč</span></div>
             </label>
             <label class="page-option">
-              <input type="radio" name="calc-pages" value="12000" data-label="Navíc stránek (7 a více)" onchange="updateCalc()">
+              <input type="radio" name="calc-pages" value="12000" data-label="Rozsáhlý web (7 a více stránek)" onchange="updateCalc()">
               <div class="page-option-inner">7 a více<br><span style="font-size:0.72rem;color:var(--gray)">+12 000 Kč</span></div>
             </label>
           </div>
@@ -883,37 +910,41 @@
               <div class="addon-inner">
                 <div class="addon-left">
                   <span class="addon-name">Fotogalerie</span>
+                  <span class="addon-desc">Prezentace fotek s lightboxem</span>
                   <span class="addon-price">+3 000 Kč</span>
                 </div>
                 <span class="addon-check">✓</span>
               </div>
             </label>
             <label class="addon-toggle">
-              <input type="checkbox" name="calc-addon" value="10000" data-label="Cenová kalkulačka" onchange="updateCalc()">
+              <input type="checkbox" name="calc-addon" value="12000" data-label="Cenová kalkulačka" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
                   <span class="addon-name">Cenová kalkulačka</span>
-                  <span class="addon-price">+10 000 Kč</span>
+                  <span class="addon-desc">Interaktivní konfigurátor pro vaše zákazníky</span>
+                  <span class="addon-price">+12 000 Kč</span>
                 </div>
                 <span class="addon-check">✓</span>
               </div>
             </label>
             <label class="addon-toggle">
-              <input type="checkbox" name="calc-addon" value="5000" data-label="Blog / aktuality" onchange="updateCalc()">
+              <input type="checkbox" name="calc-addon" value="7000" data-label="Blog / aktuality" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
                   <span class="addon-name">Blog / aktuality</span>
-                  <span class="addon-price">+5 000 Kč</span>
+                  <span class="addon-desc">Sekce pro novinky a články</span>
+                  <span class="addon-price">+7 000 Kč</span>
                 </div>
                 <span class="addon-check">✓</span>
               </div>
             </label>
             <label class="addon-toggle">
-              <input type="checkbox" name="calc-addon" value="5000" data-label="Správa obsahu (CMS)" onchange="updateCalc()">
+              <input type="checkbox" name="calc-addon" value="8000" data-label="Správa obsahu (CMS)" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
                   <span class="addon-name">Správa obsahu (CMS)</span>
-                  <span class="addon-price">+5 000 Kč</span>
+                  <span class="addon-desc">Editujte texty a fotky sami, bez vývojáře</span>
+                  <span class="addon-price">+8 000 Kč</span>
                 </div>
                 <span class="addon-check">✓</span>
               </div>
@@ -923,17 +954,8 @@
               <div class="addon-inner">
                 <div class="addon-left">
                   <span class="addon-name">Vícejazyčná verze</span>
+                  <span class="addon-desc">Web v češtině i angličtině</span>
                   <span class="addon-price">+7 000 Kč</span>
-                </div>
-                <span class="addon-check">✓</span>
-              </div>
-            </label>
-            <label class="addon-toggle">
-              <input type="checkbox" name="calc-addon" value="0" data-label="Kontaktní formulář" onchange="updateCalc()">
-              <div class="addon-inner">
-                <div class="addon-left">
-                  <span class="addon-name">Kontaktní formulář</span>
-                  <span class="addon-price" style="color:var(--accent)">zdarma</span>
                 </div>
                 <span class="addon-check">✓</span>
               </div>
@@ -967,15 +989,18 @@
       <!-- Summary panel -->
       <div class="calc-summary">
         <div class="price-label">Orientační cena</div>
-        <div class="price-value" id="calc-price">od 12 000 Kč</div>
+        <div class="price-value" id="calc-price">od 15 000 Kč</div>
         <div class="price-note">Nezávazný odhad. Přesnou nabídku dostanete do 24 hodin.</div>
         <div class="calc-breakdown" id="calc-breakdown">
           <div class="breakdown-item">
             <span class="breakdown-name">Microsite / Landing page</span>
-            <span class="breakdown-price">12 000 Kč</span>
+            <span class="breakdown-price">15 000 Kč</span>
           </div>
         </div>
         <a href="#kontakt" class="btn-primary calc-cta" id="calc-cta">Chci tuto konfiguraci →</a>
+        <div class="calc-included">
+          <strong>Vždy v ceně:</strong> kontaktní formulář, SEO základ, mobilní verze, nasazení webu, 30 dní podpory po spuštění
+        </div>
       </div>
 
     </div><!-- /calc-layout -->
