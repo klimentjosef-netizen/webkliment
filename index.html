@@ -299,48 +299,35 @@
 
     /* ABOUT */
     .about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 52px;
+      max-width: 860px;
       margin: 0 auto;
     }
 
     .about-text p {
       font-size: 1rem;
       color: var(--gray);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       line-height: 1.8;
     }
+    .about-text p:last-child { margin-bottom: 0; }
 
-    .about-values { display: flex; flex-direction: column; gap: 24px; }
-
-    .value-item {
-      display: flex;
+    .about-benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      align-items: flex-start;
-      padding: 24px;
+    }
+    .benefit-card {
+      padding: 28px 24px;
       border: 1px solid var(--light-gray);
       border-radius: 8px;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.2s;
     }
-    .value-item:hover { border-color: var(--accent); transform: translateX(4px); }
-
-    .value-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--accent);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 1.1rem;
-    }
-
-    .value-title { font-weight: 500; margin-bottom: 4px; }
-    .value-desc { font-size: 0.9rem; color: var(--gray); }
+    .benefit-card:hover { border-color: var(--accent); }
+    .benefit-title { font-weight: 500; margin-bottom: 8px; font-size: 0.95rem; }
+    .benefit-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.65; }
 
     /* SERVICES */
     .services-section { background: var(--black); color: var(--white); }
@@ -710,7 +697,7 @@
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
-      .about { grid-template-columns: 1fr; gap: 48px; }
+      .about-benefits { grid-template-columns: 1fr; }
       .services-grid { grid-template-columns: 1fr; }
       .portfolio-grid { grid-template-columns: 1fr; }
       .reviews-grid { grid-template-columns: 1fr; }
@@ -806,34 +793,24 @@
     <div class="about-text">
       <div class="section-tag">O mně</div>
       <h2 class="section-title">Josef Kliment.<br>Ne agentura.</h2>
-      <p>
-        Začal jsem jako klient. Mám vlastní účetní společnost a pokaždé, když jsem potřeboval web, dostával jsem nabídky za vysoké ceny s termínem přes tři měsíce. Tak jsem se rozhodl naučit to sám.
-      </p>
-      <p>
-        Dnes beru jen tolik projektů, kolik dokáži skutečně doručit v termínu. Pracujete přímo se mnou a výsledek přijde přesně tak, jak jsme se domluvili.
-      </p>
+      <p>Začínal jsem jako klient. Vedu vlastní účetní společnost a pokaždé, když jsem potřeboval web, dostal jsem podobnou nabídku: vysoká cena a termín několik měsíců.</p>
+      <p>Rozhodl jsem se proto naučit weby vytvářet sám.</p>
+      <p>Dnes pomáhám firmám získat moderní web rychle a bez agenturní složitosti. Pracuji jen na omezeném počtu projektů, abych každý mohl dokončit včas.</p>
+      <p>Když spolupracujeme, komunikujete přímo se mnou — s člověkem, který váš web navrhuje i vytváří. Bez prostředníků. Bez zbytečných procesů.</p>
+      <p>Domluvíme se — a přesně to také dostanete.</p>
     </div>
-    <div class="about-values">
-      <div class="value-item">
-        <div class="value-icon">⚡</div>
-        <div>
-          <div class="value-title">Rychlost</div>
-          <div class="value-desc">14 dní od zahájení k hotovému webu. Protože vím, jaké je čekat.</div>
-        </div>
+    <div class="about-benefits">
+      <div class="benefit-card">
+        <div class="benefit-title">Přímá spolupráce</div>
+        <div class="benefit-desc">Jednáte přímo s člověkem, který web skutečně vytváří.</div>
       </div>
-      <div class="value-item">
-        <div class="value-icon">✦</div>
-        <div>
-          <div class="value-title">Na míru</div>
-          <div class="value-desc">Žádné šablony, žádné krabicové řešení. Každý web navržený přímo pro vás.</div>
-        </div>
+      <div class="benefit-card">
+        <div class="benefit-title">Rozumné termíny</div>
+        <div class="benefit-desc">Projekt beru jen tehdy, když ho dokážu dodat v domluveném čase.</div>
       </div>
-      <div class="value-item">
-        <div class="value-icon">🤝</div>
-        <div>
-          <div class="value-title">Garance</div>
-          <div class="value-desc">Nespokojenost? Vrátím celou částku. Bez otázek, bez podmínek.</div>
-        </div>
+      <div class="benefit-card">
+        <div class="benefit-title">Praktický přístup</div>
+        <div class="benefit-desc">Jako podnikatel vím, že web musí hlavně fungovat.</div>
       </div>
     </div>
   </div>
@@ -1266,10 +1243,10 @@
     });
   }, { threshold: 0.12 });
 
-  const gridItems = new Set(['service-card', 'portfolio-card', 'value-item', 'addon-toggle', 'type-card']);
+  const gridItems = new Set(['service-card', 'portfolio-card', 'benefit-card', 'addon-toggle', 'type-card']);
 
   document.querySelectorAll(
-    '.value-item, .service-card, .portfolio-card, .calc-block, .addon-toggle, .type-card, .section-title, .section-tag, .about-text p, .contact-subtitle'
+    '.benefit-card, .service-card, .portfolio-card, .calc-block, .addon-toggle, .type-card, .section-title, .section-tag, .about-text p, .contact-subtitle'
   ).forEach(el => {
     const cls = [...el.classList].find(c => gridItems.has(c));
     const delay = cls
