@@ -480,11 +480,72 @@
       font-size: 0.95rem;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.25s;
+      transition: all 0.3s;
       align-self: center;
       margin-top: 8px;
+      box-shadow: 0 0 0 rgba(201,168,76,0);
     }
-    .btn-submit:hover { background: var(--white); transform: translateY(-1px); }
+    .btn-submit:hover {
+      background: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(201,168,76,0.4), 0 4px 20px rgba(201,168,76,0.2);
+    }
+
+    /* Budget select */
+    .form-select {
+      width: 100%;
+      background: #0e0d0d;
+      border: 1px solid #1e1e1e;
+      border-radius: 4px;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 300;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7070' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+    .form-select:focus { border-color: var(--accent); }
+    .form-select option { background: #111; color: var(--white); }
+    .budget-hint {
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: -12px;
+      display: none;
+    }
+
+    /* Case study */
+    .case-study {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--light-gray);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .case-study-item {
+      display: flex;
+      gap: 10px;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: #555;
+    }
+    .case-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      min-width: 62px;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
 
     .contact-direct {
       margin-top: 48px;
@@ -1128,6 +1189,11 @@
             <span class="tag">Vícejazyčný</span>
           </div>
           <a href="https://mnai-nine.vercel.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
+          <div class="case-study">
+            <div class="case-study-item"><span class="case-label">Problém</span><span>Klient potřeboval platformu pro M&A transakce s AI párováním — žádné hotové řešení nevyhovovalo.</span></div>
+            <div class="case-study-item"><span class="case-label">Řešení</span><span>Vlastní webová aplikace s AI modulem, automatickým párováním a vícejazyčnou podporou.</span></div>
+            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Platforma spuštěná v termínu, připravená pro první aktivní uživatele.</span></div>
+          </div>
         </div>
       </div>
       <div class="portfolio-card">
@@ -1144,6 +1210,11 @@
             <span class="tag">Formulář</span>
           </div>
           <a href="https://maiden-services.vercel.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
+          <div class="case-study">
+            <div class="case-study-item"><span class="case-label">Problém</span><span>Účetní firma získávala klienty výhradně přes doporučení a neměla žádnou online prezentaci.</span></div>
+            <div class="case-study-item"><span class="case-label">Řešení</span><span>Přehledný prezentační web s jasným CTA, sekcí služeb a kontaktním formulářem pro přímé poptávky.</span></div>
+            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Firma má profesionální online vizitku a první poptávky přišly ještě týden po spuštění.</span></div>
+          </div>
         </div>
       </div>
       <div class="portfolio-card">
@@ -1160,6 +1231,11 @@
             <span class="tag">Animace</span>
           </div>
           <a href="https://kliments.vercel.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
+          <div class="case-study">
+            <div class="case-study-item"><span class="case-label">Problém</span><span>Finanční poradce potřeboval web, který odpovídá prémiové úrovni jeho služeb a odliší ho od konkurence.</span></div>
+            <div class="case-study-item"><span class="case-label">Řešení</span><span>Prémiový design s vlastním animovaným kurzorem, plynulými přechody sekcí a silnou vizuální identitou.</span></div>
+            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Web, který buduje důvěru hned na první pohled a odráží kvalitu poradenství klienta.</span></div>
+          </div>
         </div>
       </div>
       <div class="portfolio-card">
@@ -1176,6 +1252,11 @@
             <span class="tag">Animace</span>
           </div>
           <a href="https://klimentjosef-netizen.github.io/the-33-tour/" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
+          <div class="case-study">
+            <div class="case-study-item"><span class="case-label">Problém</span><span>Klasická pozvánka na oslavu nestačila — cílem bylo vytvořit zážitek ještě před samotnou akcí.</span></div>
+            <div class="case-study-item"><span class="case-label">Řešení</span><span>Pět animovaných scén ve stylu tour-stránky kapely s RSVP systémem a vlastní atmosférou.</span></div>
+            <div class="case-study-item"><span class="case-label">Výsledek</span><span>100% digitální organizace akce, hosté vnímali web jako součást celého zážitku.</span></div>
+          </div>
         </div>
       </div>
       <div class="portfolio-card" style="border-style: dashed; display:flex; align-items:center; justify-content:center; min-height:200px;">
@@ -1225,6 +1306,17 @@
       <input type="email" class="form-input" placeholder="E-mail" required />
     </div>
     <input type="text" class="form-input" id="subject-input" placeholder="Předmět" />
+    <select class="form-select" id="budget-input" onchange="handleBudgetChange()">
+      <option value="">Rozpočet projektu...</option>
+      <option value="calc">Vypočítáno v kalkulačce</option>
+      <option value="do15">Do 15 000 Kč</option>
+      <option value="15-30">15 000 – 30 000 Kč</option>
+      <option value="30-50">30 000 – 50 000 Kč</option>
+      <option value="50-75">50 000 – 75 000 Kč</option>
+      <option value="75+">75 000 Kč a více</option>
+      <option value="discuss">Chci nejdřív prokonzultovat</option>
+    </select>
+    <div class="budget-hint" id="budget-hint"></div>
     <textarea class="form-input" id="message-input" placeholder="Popište váš projekt..."></textarea>
     <button type="submit" class="btn-submit">Odeslat zprávu →</button>
   </form>
@@ -1268,6 +1360,19 @@
     });
   });
 
+  // BUDGET HINT
+  function handleBudgetChange() {
+    const sel = document.getElementById('budget-input');
+    const hint = document.getElementById('budget-hint');
+    if (!sel || !hint) return;
+    if (sel.value === 'calc') {
+      hint.textContent = 'Aktuální hodnota z kalkulačky: od ' + _calcTotal.toLocaleString('cs-CZ') + ' Kč';
+      hint.style.display = 'block';
+    } else {
+      hint.style.display = 'none';
+    }
+  }
+
   // FORM
   function handleSubmit(e) {
     e.preventDefault();
@@ -1289,6 +1394,7 @@
   }
 
   let _calcDisplayedPrice = 15000;
+  let _calcTotal = 15000;
   let _calcRafId = null;
 
   function animatePrice(target) {
@@ -1352,6 +1458,7 @@
     }
 
     // Animovaná cena
+    _calcTotal = total;
     animatePrice(total);
 
     // Doba realizace
@@ -1372,10 +1479,12 @@
     document.getElementById('calc-cta').onclick = function () {
       const subj = document.getElementById('subject-input');
       const msg = document.getElementById('message-input');
+      const budget = document.getElementById('budget-input');
       if (subj) subj.value = 'Poptávka — ' + (project ? project.dataset.label : '') + ' od ' + formatKc(total);
       if (msg) msg.value = 'Konfigurace z kalkulačky:\n' +
         lines.map(l => '- ' + l.name + ': ' + formatKc(l.price)).join('\n') +
         '\n\nCelkem: od ' + formatKc(total) + '\n\n';
+      if (budget) { budget.value = 'calc'; handleBudgetChange(); }
     };
 
     // Skrytí počtu stránek pro microsite
