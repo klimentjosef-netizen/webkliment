@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web by Kliment — Weby, které dělají dojem.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white: #F9F6F0;
+      --black: #0A0909;
+      --accent: #C9A84C;
+      --gray: #7A7070;
+      --light-gray: #E8E4DE;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    .lang-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      background: rgba(249,246,240,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      text-decoration: none;
+    }
+    .logo span {
+      color: var(--accent);
+      background: var(--black);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--gray);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+
+    /* HAMBURGER */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--black);
+      transition: all 0.3s;
+      border-radius: 1px;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+
+    .hero-left {
+      padding: 80px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .hero-tag {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--gray);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 6vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 32px;
+    }
+    .hero-title em { font-style: italic; color: var(--gray); }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--gray);
+      max-width: 440px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+
+    .hero-cta { display: flex; gap: 16px; align-items: center; }
+
+    .btn-primary {
+      background: var(--black);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover { background: var(--accent); color: var(--black); transform: translateY(-1px); }
+
+    .btn-secondary {
+      color: var(--black);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 2px;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { color: var(--gray); border-color: var(--gray); }
+
+    .hero-right {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-right::before {
+      content: 'WBK';
+      position: absolute;
+      top: -20px; right: -30px;
+      font-family: var(--font-display);
+      font-size: 18rem;
+      font-weight: 900;
+      color: rgba(201,168,76,0.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .hero-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+      background: #1a1616;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-number span { color: var(--accent); font-size: 1.1rem; }
+    .stat-label { font-size: 0.75rem; color: #666; margin-top: 4px; letter-spacing: 0.04em; }
+
+    /* SECTIONS */
+    section { padding: 100px 48px; }
+
+    .section-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    /* ABOUT */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-text p {
+      font-size: 1rem;
+      color: var(--gray);
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .about-values { display: flex; flex-direction: column; gap: 24px; }
+
+    .value-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 24px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .value-item:hover { border-color: var(--accent); transform: translateX(4px); }
+
+    .value-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+
+    .value-title { font-weight: 500; margin-bottom: 4px; }
+    .value-desc { font-size: 0.9rem; color: var(--gray); }
+
+    /* SERVICES */
+    .services-section { background: var(--black); color: var(--white); }
+    .services-section .section-tag { color: #555; }
+    .services-section .section-title { color: var(--white); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+
+    .service-card {
+      padding: 40px 32px;
+      border: 1px solid #1a1a1a;
+      transition: background 0.25s;
+      cursor: default;
+    }
+    .service-card:hover { background: #111111; }
+
+    .service-number {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 900;
+      color: #222;
+      margin-bottom: 20px;
+      line-height: 1;
+    }
+
+    .service-name { font-size: 1.1rem; font-weight: 500; margin-bottom: 12px; color: var(--white); }
+    .service-desc { font-size: 0.9rem; color: #666; line-height: 1.7; margin-bottom: 20px; }
+    .service-price {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* PORTFOLIO */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .portfolio-card {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--light-gray);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .portfolio-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+
+    .portfolio-img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      background: var(--light-gray);
+    }
+
+    .portfolio-info { padding: 24px; }
+    .portfolio-client { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+    .portfolio-name { font-weight: 500; font-size: 1.05rem; margin-bottom: 8px; }
+    .portfolio-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--light-gray);
+      color: var(--gray);
+      letter-spacing: 0.04em;
+    }
+
+    /* REVIEWS */
+    .reviews-section { background: #F0EDE7; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin: 60px auto 0;
+      max-width: 1200px;
+    }
+
+    .review-card { background: var(--white); padding: 32px; border-radius: 8px; }
+    .review-stars { color: var(--black); font-size: 0.85rem; margin-bottom: 16px; letter-spacing: 4px; }
+    .review-text { font-size: 0.95rem; color: var(--gray); line-height: 1.7; margin-bottom: 24px; font-style: italic; }
+    .review-author { font-weight: 500; font-size: 0.9rem; }
+    .review-company { font-size: 0.8rem; color: var(--gray); }
+
+    /* CONTACT */
+    .contact-section {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 120px 48px;
+    }
+
+    .contact-section .section-tag { color: #444; }
+    .contact-section .section-title { color: var(--white); max-width: 600px; margin: 0 auto 16px; }
+
+    .contact-subtitle { color: #555; font-size: 1rem; margin-bottom: 48px; }
+
+    .contact-form {
+      max-width: 560px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-input {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 14px 18px;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      width: 100%;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: #444; }
+    textarea.form-input { resize: vertical; min-height: 120px; }
+
+    .btn-submit {
+      background: var(--accent);
+      color: var(--black);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 40px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      align-self: center;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--white); transform: translateY(-1px); }
+
+    .contact-direct {
+      margin-top: 48px;
+      padding-top: 48px;
+      border-top: 1px solid #1a1a1a;
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    .contact-link { color: #444; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .contact-link:hover { color: var(--white); }
+    .contact-link strong { display: block; color: var(--white); font-weight: 400; margin-top: 4px; }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 48px;
+      border-top: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer .logo { font-size: 1rem; }
+    .footer-copy { font-size: 0.8rem; color: var(--gray); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-tag { animation: fadeUp 0.6s ease forwards; }
+    .hero-title { animation: fadeUp 0.7s 0.1s ease both; }
+    .hero-desc { animation: fadeUp 0.7s 0.2s ease both; }
+    .hero-cta { animation: fadeUp 0.7s 0.3s ease both; }
+
+    /* CALCULATOR */
+    .calculator-section { background: #F0EDE7; }
+
+    .calc-container { max-width: 1200px; margin: 0 auto; }
+
+    .calc-intro {
+      color: var(--gray);
+      max-width: 500px;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 48px;
+      margin-top: 52px;
+      align-items: start;
+    }
+
+    .calc-block { margin-bottom: 40px; }
+    .calc-block:last-child { margin-bottom: 0; }
+
+    .calc-block-title {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    /* Project type cards */
+    .project-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+    .type-card { cursor: pointer; display: block; }
+    .type-card input[type="radio"] { display: none; }
+    .type-card-inner {
+      padding: 18px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      background: var(--white);
+      transition: all 0.2s;
+    }
+    .type-card input:checked + .type-card-inner {
+      border-color: var(--accent);
+      background: rgba(201,168,76,0.06);
+    }
+    .type-card-inner:hover { border-color: #c8c0b8; }
+    .type-name { font-weight: 500; font-size: 0.95rem; margin-bottom: 3px; }
+    .type-desc { font-size: 0.78rem; color: var(--gray); margin-bottom: 12px; }
+    .type-price { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--accent); }
+
+    /* Page count & timeline options */
+    .page-options { display: flex; gap: 10px; }
+    .page-option { cursor: pointer; flex: 1; display: block; }
+    .page-option input[type="radio"] { display: none; }
+    .page-option-inner {
+      padding: 14px 12px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      background: var(--white);
+      text-align: center;
+      transition: all 0.2s;
+      font-size: 0.88rem;
+    }
+    .page-option input:checked + .page-option-inner {
+      border-color: var(--accent);
+      background: rgba(201,168,76,0.06);
+      font-weight: 500;
+    }
+    .page-option-inner:hover { border-color: #c8c0b8; }
+
+    /* Add-ons */
+    .addons-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .addon-toggle { cursor: pointer; display: block; }
+    .addon-toggle input[type="checkbox"] { display: none; }
+    .addon-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 16px;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      background: var(--white);
+      transition: all 0.2s;
+      gap: 8px;
+    }
+    .addon-toggle input:checked + .addon-inner {
+      border-color: var(--accent);
+      background: rgba(201,168,76,0.06);
+    }
+    .addon-inner:hover { border-color: #c8c0b8; }
+    .addon-left { display: flex; flex-direction: column; gap: 2px; }
+    .addon-name { font-size: 0.88rem; font-weight: 400; }
+    .addon-price { font-size: 0.75rem; color: var(--gray); }
+    .addon-check {
+      width: 20px; height: 20px;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      color: transparent;
+    }
+    .addon-toggle input:checked + .addon-inner .addon-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--black);
+    }
+
+    /* Summary panel */
+    .calc-summary {
+      position: sticky;
+      top: 100px;
+      background: var(--black);
+      border-radius: 12px;
+      padding: 28px;
+      color: var(--white);
+    }
+
+    .price-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .price-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+
+    .price-note {
+      font-size: 0.76rem;
+      color: #444;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .calc-breakdown {
+      border-top: 1px solid #1a1a1a;
+      padding-top: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 40px;
+    }
+
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 0.8rem;
+      gap: 8px;
+    }
+    .breakdown-name { color: #777; flex: 1; }
+    .breakdown-price { color: var(--white); white-space: nowrap; }
+
+    .calc-cta { width: 100%; justify-content: center; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about { grid-template-columns: 1fr; gap: 48px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .lang-bar { padding: 16px 24px; }
+      section { padding: 80px 24px; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 65px;
+        left: 0; right: 0;
+        background: var(--white);
+        flex-direction: column;
+        padding: 24px 48px;
+        border-bottom: 1px solid var(--light-gray);
+        gap: 20px;
+        z-index: 99;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1rem; }
+      .contact-direct { flex-direction: column; align-items: center; gap: 24px; }
+      .calc-layout { grid-template-columns: 1fr; }
+      .project-types { grid-template-columns: 1fr; }
+      .addons-grid { grid-template-columns: 1fr; }
+      .page-options { flex-wrap: wrap; }
+      .calc-summary { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="lang-bar">
+  <a href="#" class="logo">Web<span>by</span>Kliment</a>
+  <div class="nav-right">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#o-mne">O mně</a></li>
+      <li><a href="#sluzby">Služby</a></li>
+      <li><a href="#kalkulacka">Kalkulačka</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding:0;">
+  <div class="hero-left">
+    <div class="hero-tag">Webový vývojář · Ostrava</div>
+    <h1 class="hero-title">
+      Web, který<br><em>dělá dojem.</em>
+    </h1>
+    <p class="hero-desc">
+      Prémiový design za férovou cenu. Bez šablon, bez průměru. Pevná cena, pevný termín. Nebo vrátím peníze.
+    </p>
+    <div class="hero-cta">
+      <a href="#kontakt" class="btn-primary">Pojďme na to →</a>
+      <a href="#portfolio" class="btn-secondary">Ukázky prací</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <!-- FOTO: nahradte src="foto.jpg" vasim snimkem -->
+    <img src="foto.jpg" alt="Kliment, webový vývojář" class="hero-photo" />
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">14<span>d</span></div>
+        <div class="stat-label">Průměrná realizace</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100<span>%</span></div>
+        <div class="stat-label">Garance spokojenosti</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">0<span>šablon</span></div>
+        <div class="stat-label">Každý web od základu</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="o-mne" style="background: var(--white);">
+  <div class="about">
+    <div class="about-text">
+      <div class="section-tag">O mně</div>
+      <h2 class="section-title">Kliment.<br>Ne agentura.</h2>
+      <p>
+        Jmenuji se Kliment a stavím weby tak, jak bych je chtěl mít sám. Čisté, rychlé a takové, které skutečně pracují pro váš byznys.
+      </p>
+      <p>
+        Pracuji přímo s klientem. Žádní prostředníci, žádné ztracené e-maily. Víte přesně co dostanete, kdy to dostanete a za kolik.
+      </p>
+    </div>
+    <div class="about-values">
+      <div class="value-item">
+        <div class="value-icon">⚡</div>
+        <div>
+          <div class="value-title">Rychlost</div>
+          <div class="value-desc">14 dní od zadání k hotovému webu. Žádné čekání na měsíce.</div>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">✦</div>
+        <div>
+          <div class="value-title">Čistý design</div>
+          <div class="value-desc">Elegantní, přehledné, na míru vaší značce. Bez šablon, bez kompromisů.</div>
+        </div>
+      </div>
+      <div class="value-item">
+        <div class="value-icon">🤝</div>
+        <div>
+          <div class="value-title">Garance</div>
+          <div class="value-desc">Pokud nebudete spokojeni, vrátím celou částku. Bez otázek, bez podmínek.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="sluzby" class="services-section">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="section-tag">Služby a ceník</div>
+    <h2 class="section-title">Co pro vás udělám.</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-number">01</div>
+        <div class="service-name">Prezentační web</div>
+        <div class="service-desc">Čistý, rychlý web, který reprezentuje vaši firmu. Galerie, reference, kontaktní formulář. Přesně tak jak to potřebujete. Bez zbytečností.</div>
+        <div class="service-price">od 20 000 Kč</div>
+      </div>
+      <div class="service-card">
+        <div class="service-number">02</div>
+        <div class="service-name">Microsite a Landing page</div>
+        <div class="service-desc">Jednostránkový web zaměřený na jeden cíl. Ideální pro kampaně, akce nebo produkty, které potřebují vlastní prostor a jasnou výzvu k akci.</div>
+        <div class="service-price">od 12 000 Kč</div>
+      </div>
+      <div class="service-card">
+        <div class="service-number">03</div>
+        <div class="service-name">Kalkulačka a konfigurátor</div>
+        <div class="service-desc">Interaktivní nástroj, který zákazníkovi spočítá cenu ještě před kontaktem. Méně telefonátů, více kvalitních poptávek.</div>
+        <div class="service-price">od 30 000 Kč</div>
+      </div>
+      <div class="service-card">
+        <div class="service-number">04</div>
+        <div class="service-name">Modernizace a redesign</div>
+        <div class="service-desc">Starý web, který vám nepomáhá? Přestavím ho na moderní, rychlou prezentaci, na které se nestydíte.</div>
+        <div class="service-price">od 18 000 Kč</div>
+      </div>
+    </div>
+    <p style="color:#444; font-size:0.85rem; margin-top:24px; text-align:center;">Máte konkrétní představu? Napište mi a dostanete přesnou cenu do 24 hodin.</p>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="kalkulacka" class="calculator-section">
+  <div class="calc-container">
+    <div class="section-tag">Cenový odhad</div>
+    <h2 class="section-title">Spočítejte si cenu.</h2>
+    <p class="calc-intro">Vyberte co potřebujete a okamžitě uvidíte orientační cenu. Přesnou nabídku dostanete do 24 hodin.</p>
+
+    <div class="calc-layout">
+      <div class="calc-options">
+
+        <!-- 01: Typ projektu -->
+        <div class="calc-block">
+          <div class="calc-block-title">01 &nbsp;Typ projektu</div>
+          <div class="project-types">
+            <label class="type-card">
+              <input type="radio" name="calc-project" value="12000" data-label="Microsite / Landing page" checked onchange="updateCalc()">
+              <div class="type-card-inner">
+                <div class="type-name">Microsite</div>
+                <div class="type-desc">Jednostránkový web</div>
+                <div class="type-price">12 000 Kč</div>
+              </div>
+            </label>
+            <label class="type-card">
+              <input type="radio" name="calc-project" value="20000" data-label="Prezentační web" onchange="updateCalc()">
+              <div class="type-card-inner">
+                <div class="type-name">Prezentační web</div>
+                <div class="type-desc">Vícestránkový web</div>
+                <div class="type-price">20 000 Kč</div>
+              </div>
+            </label>
+            <label class="type-card">
+              <input type="radio" name="calc-project" value="18000" data-label="Modernizace / redesign" onchange="updateCalc()">
+              <div class="type-card-inner">
+                <div class="type-name">Modernizace</div>
+                <div class="type-desc">Redesign starého webu</div>
+                <div class="type-price">18 000 Kč</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 02: Počet stránek -->
+        <div class="calc-block" id="calc-pages-block">
+          <div class="calc-block-title">02 &nbsp;Počet stránek</div>
+          <div class="page-options">
+            <label class="page-option">
+              <input type="radio" name="calc-pages" value="0" data-label="" checked onchange="updateCalc()">
+              <div class="page-option-inner">1 až 3</div>
+            </label>
+            <label class="page-option">
+              <input type="radio" name="calc-pages" value="6000" data-label="Navíc stránek (4 až 6)" onchange="updateCalc()">
+              <div class="page-option-inner">4 až 6<br><span style="font-size:0.72rem;color:var(--gray)">+6 000 Kč</span></div>
+            </label>
+            <label class="page-option">
+              <input type="radio" name="calc-pages" value="12000" data-label="Navíc stránek (7 a více)" onchange="updateCalc()">
+              <div class="page-option-inner">7 a více<br><span style="font-size:0.72rem;color:var(--gray)">+12 000 Kč</span></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 03: Doplňky -->
+        <div class="calc-block">
+          <div class="calc-block-title">03 &nbsp;Doplňky</div>
+          <div class="addons-grid">
+            <label class="addon-toggle">
+              <input type="checkbox" name="calc-addon" value="3000" data-label="Fotogalerie" onchange="updateCalc()">
+              <div class="addon-inner">
+                <div class="addon-left">
+                  <span class="addon-name">Fotogalerie</span>
+                  <span class="addon-price">+3 000 Kč</span>
+                </div>
+                <span class="addon-check">✓</span>
+              </div>
+            </label>
+            <label class="addon-toggle">
+              <input type="checkbox" name="calc-addon" value="10000" data-label="Cenová kalkulačka" onchange="updateCalc()">
+              <div class="addon-inner">
+                <div class="addon-left">
+                  <span class="addon-name">Cenová kalkulačka</span>
+                  <span class="addon-price">+10 000 Kč</span>
+                </div>
+                <span class="addon-check">✓</span>
+              </div>
+            </label>
+            <label class="addon-toggle">
+              <input type="checkbox" name="calc-addon" value="5000" data-label="Blog / aktuality" onchange="updateCalc()">
+              <div class="addon-inner">
+                <div class="addon-left">
+                  <span class="addon-name">Blog / aktuality</span>
+                  <span class="addon-price">+5 000 Kč</span>
+                </div>
+                <span class="addon-check">✓</span>
+              </div>
+            </label>
+            <label class="addon-toggle">
+              <input type="checkbox" name="calc-addon" value="5000" data-label="Správa obsahu (CMS)" onchange="updateCalc()">
+              <div class="addon-inner">
+                <div class="addon-left">
+                  <span class="addon-name">Správa obsahu (CMS)</span>
+                  <span class="addon-price">+5 000 Kč</span>
+                </div>
+                <span class="addon-check">✓</span>
+              </div>
+            </label>
+            <label class="addon-toggle">
+              <input type="checkbox" name="calc-addon" value="7000" data-label="Vícejazyčná verze" onchange="updateCalc()">
+              <div class="addon-inner">
+                <div class="addon-left">
+                  <span class="addon-name">Vícejazyčná verze</span>
+                  <span class="addon-price">+7 000 Kč</span>
+                </div>
+                <span class="addon-check">✓</span>
+              </div>
+            </label>
+            <label class="addon-toggle">
+              <input type="checkbox" name="calc-addon" value="0" data-label="Kontaktní formulář" onchange="updateCalc()">
+              <div class="addon-inner">
+                <div class="addon-left">
+                  <span class="addon-name">Kontaktní formulář</span>
+                  <span class="addon-price" style="color:var(--accent)">zdarma</span>
+                </div>
+                <span class="addon-check">✓</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 04: Termín -->
+        <div class="calc-block">
+          <div class="calc-block-title">04 &nbsp;Termín realizace</div>
+          <div class="page-options">
+            <label class="page-option">
+              <input type="radio" name="calc-timeline" value="0" data-label="" checked onchange="updateCalc()">
+              <div class="page-option-inner">
+                Standardní<br>
+                <span style="font-size:0.72rem;color:var(--gray)">do 14 dní</span>
+              </div>
+            </label>
+            <label class="page-option">
+              <input type="radio" name="calc-timeline" value="5000" data-label="Expresní realizace (do 7 dní)" onchange="updateCalc()">
+              <div class="page-option-inner">
+                Expresní<br>
+                <span style="font-size:0.72rem;color:var(--gray)">do 7 dní &nbsp;+5 000 Kč</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </div><!-- /calc-options -->
+
+      <!-- Summary panel -->
+      <div class="calc-summary">
+        <div class="price-label">Orientační cena</div>
+        <div class="price-value" id="calc-price">od 12 000 Kč</div>
+        <div class="price-note">Nezávazný odhad. Přesnou nabídku dostanete do 24 hodin.</div>
+        <div class="calc-breakdown" id="calc-breakdown">
+          <div class="breakdown-item">
+            <span class="breakdown-name">Microsite / Landing page</span>
+            <span class="breakdown-price">12 000 Kč</span>
+          </div>
+        </div>
+        <a href="#kontakt" class="btn-primary calc-cta" id="calc-cta">Chci tuto konfiguraci →</a>
+      </div>
+
+    </div><!-- /calc-layout -->
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="section-tag">Portfolio</div>
+    <h2 class="section-title">Ukázky prací.</h2>
+    <div class="portfolio-grid">
+      <div class="portfolio-card">
+        <!-- FOTO: nahradte src za screenshot webu -->
+        <img src="portfolio/boza.jpg" alt="BOZA reko s.r.o." class="portfolio-img" />
+        <div class="portfolio-info">
+          <div class="portfolio-client">Rekonstrukce</div>
+          <div class="portfolio-name">BOZA reko s.r.o.</div>
+          <div class="portfolio-tags">
+            <span class="tag">Kalkulačka</span>
+            <span class="tag">Galerie</span>
+            <span class="tag">Dark design</span>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-card">
+        <img src="portfolio/maiden.jpg" alt="Maiden Services" class="portfolio-img" />
+        <div class="portfolio-info">
+          <div class="portfolio-client">Účetnictví a poradenství</div>
+          <div class="portfolio-name">Maiden Services</div>
+          <div class="portfolio-tags">
+            <span class="tag">Prémiový design</span>
+            <span class="tag">Vercel</span>
+            <span class="tag">Next.js</span>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-card">
+        <img src="portfolio/lupe.jpg" alt="LuPe Padel" class="portfolio-img" />
+        <div class="portfolio-info">
+          <div class="portfolio-client">Sport a komunita</div>
+          <div class="portfolio-name">LuPe Padel</div>
+          <div class="portfolio-tags">
+            <span class="tag">Komunitní web</span>
+            <span class="tag">Padelový advisor</span>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-card" style="border-style: dashed; display:flex; align-items:center; justify-content:center; min-height:200px;">
+        <div style="text-align:center; color:var(--gray); padding:40px;">
+          <div style="font-size:2rem; margin-bottom:12px;">+</div>
+          <div style="font-size:0.85rem;">Váš web zde?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reference" class="reviews-section">
+  <div style="max-width:1200px; margin:0 auto;">
+    <div class="section-tag">Reference</div>
+    <h2 class="section-title">Co říkají klienti.</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Kliment doručil web za 10 dní, přesně jak slíbil. Design předčil naše očekávání a kalkulačka funguje skvěle."</div>
+        <div class="review-author">[Jméno klienta]</div>
+        <div class="review-company">BOZA reko s.r.o.</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Profesionální přístup, skvělá komunikace. Web vypadá přesně tak, jak jsme si představovali. Čistě a prémiově."</div>
+        <div class="review-author">[Jméno klienta]</div>
+        <div class="review-company">Maiden Services</div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">"Za tu cenu absolutní špička. Doporučuji každému, kdo chce web rychle a bez kompromisů v kvalitě."</div>
+        <div class="review-author">[Jméno klienta]</div>
+        <div class="review-company">LuPe Padel</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="kontakt" class="contact-section">
+  <div class="section-tag">Kontakt</div>
+  <h2 class="section-title">Máte projekt?<br>Pojďme na to.</h2>
+  <p class="contact-subtitle">Napište co potřebujete. Odpovím do 24 hodin s přesnou cenou a termínem.</p>
+
+  <form class="contact-form" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <input type="text" class="form-input" placeholder="Jméno" required />
+      <input type="email" class="form-input" placeholder="E-mail" required />
+    </div>
+    <input type="text" class="form-input" id="subject-input" placeholder="Předmět" />
+    <textarea class="form-input" id="message-input" placeholder="Popište váš projekt..."></textarea>
+    <button type="submit" class="btn-submit">Odeslat zprávu →</button>
+  </form>
+
+  <div class="contact-direct">
+    <!-- Nahradte skutecnymi udaji -->
+    <a href="mailto:kliment.josef@email.cz" class="contact-link">
+      E-mail
+      <strong>kliment.josef@email.cz</strong>
+    </a>
+    <a href="tel:+420777136553" class="contact-link">
+      Telefon
+      <strong>+420 777 136 553</strong>
+    </a>
+    <a href="https://linkedin.com/in/webkliment" class="contact-link">
+      LinkedIn
+      <strong>WebByKliment</strong>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">Web<span>by</span>Kliment</a>
+  <div class="footer-copy">© 2025 WebByKliment · Ostrava · Weby, které dělají dojem.</div>
+</footer>
+
+<script>
+  // HAMBURGER MENU
+  function toggleMenu() {
+    const nav = document.getElementById('nav-links');
+    const btn = document.getElementById('hamburger');
+    nav.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('nav-links').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
+  // FORM
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.btn-submit');
+    btn.textContent = 'Odesláno ✓';
+    btn.style.background = '#4CAF50';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'Odeslat zprávu →';
+      btn.style.background = '';
+      btn.style.color = '';
+      e.target.reset();
+    }, 3000);
+  }
+
+  // CALCULATOR
+  // Ceny — upravte dle vasich skutecnych hodnot
+  function formatKc(n) {
+    return n.toLocaleString('cs-CZ') + ' Kč';
+  }
+
+  function updateCalc() {
+    let total = 0;
+    const lines = [];
+
+    // Typ projektu
+    const project = document.querySelector('input[name="calc-project"]:checked');
+    if (project) {
+      const v = parseInt(project.value);
+      total += v;
+      lines.push({ name: project.dataset.label, price: v, base: true });
+    }
+
+    // Stránky
+    const pages = document.querySelector('input[name="calc-pages"]:checked');
+    if (pages && parseInt(pages.value) > 0) {
+      const v = parseInt(pages.value);
+      total += v;
+      lines.push({ name: pages.dataset.label, price: v });
+    }
+
+    // Doplňky
+    document.querySelectorAll('input[name="calc-addon"]:checked').forEach(el => {
+      const v = parseInt(el.value);
+      total += v;
+      lines.push({ name: el.dataset.label, price: v });
+    });
+
+    // Termín
+    const timeline = document.querySelector('input[name="calc-timeline"]:checked');
+    if (timeline && parseInt(timeline.value) > 0) {
+      const v = parseInt(timeline.value);
+      total += v;
+      lines.push({ name: timeline.dataset.label, price: v });
+    }
+
+    // Aktualizace ceny
+    document.getElementById('calc-price').textContent = 'od ' + formatKc(total);
+
+    // Rozpad ceny
+    document.getElementById('calc-breakdown').innerHTML = lines.map((l, i) =>
+      `<div class="breakdown-item">
+        <span class="breakdown-name">${l.name}</span>
+        <span class="breakdown-price">${i === 0 ? formatKc(l.price) : (l.price === 0 ? 'zdarma' : '+' + formatKc(l.price))}</span>
+      </div>`
+    ).join('');
+
+    // Předvyplnění kontaktního formuláře
+    document.getElementById('calc-cta').onclick = function () {
+      const subj = document.getElementById('subject-input');
+      const msg = document.getElementById('message-input');
+      if (subj) subj.value = 'Poptávka — ' + (project ? project.dataset.label : '') + ' od ' + formatKc(total);
+      if (msg) msg.value = 'Konfigurace z kalkulačky:\n' +
+        lines.map(l => '- ' + l.name + ': ' + formatKc(l.price)).join('\n') +
+        '\n\nCelkem: od ' + formatKc(total) + '\n\n';
+    };
+
+    // Skrytí počtu stránek pro microsite
+    const pagesBlock = document.getElementById('calc-pages-block');
+    if (pagesBlock) {
+      pagesBlock.style.opacity = project && project.value === '12000' ? '0.4' : '1';
+      pagesBlock.style.pointerEvents = project && project.value === '12000' ? 'none' : 'auto';
+    }
+  }
+
+  // Inicializace
+  updateCalc();
+
+  // SCROLL FADE-IN
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.value-item, .service-card, .portfolio-card, .review-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
