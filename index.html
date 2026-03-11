@@ -1414,12 +1414,10 @@
     _calcRafId = requestAnimationFrame(tick);
   }
 
-  function getDelivery(total, addonsCount, express) {
+  function getDelivery(addonsCount, express) {
     if (express) return '5–7 dní';
-    if (total < 22000 && addonsCount === 0) return '7–10 dní';
-    if (total < 30000) return '10–14 dní';
-    if (total < 45000) return '2–4 týdny';
-    return '4–8 týdnů';
+    if (addonsCount <= 1) return '7–10 dní';
+    return '10–14 dní';
   }
 
   function updateCalc() {
@@ -1465,7 +1463,7 @@
     const addonsCount = document.querySelectorAll('input[name="calc-addon"]:checked').length;
     const isExpress = timeline && parseInt(timeline.value) > 0;
     const deliveryEl = document.getElementById('delivery-text');
-    if (deliveryEl) deliveryEl.textContent = 'Odhadovaná doba: ' + getDelivery(total, addonsCount, isExpress);
+    if (deliveryEl) deliveryEl.textContent = 'Odhadovaná doba: ' + getDelivery(addonsCount, isExpress);
 
     // Rozpad ceny
     document.getElementById('calc-breakdown').innerHTML = lines.map((l, i) =>
