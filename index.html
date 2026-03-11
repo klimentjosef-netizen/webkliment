@@ -1302,11 +1302,11 @@
 
   <form class="contact-form" onsubmit="handleSubmit(event)">
     <div class="form-row">
-      <input type="text" class="form-input" placeholder="Jméno" required />
-      <input type="email" class="form-input" placeholder="E-mail" required />
+      <input type="text" name="name" class="form-input" placeholder="Jméno" required />
+      <input type="email" name="email" class="form-input" placeholder="E-mail" required />
     </div>
-    <input type="text" class="form-input" id="subject-input" placeholder="Předmět" />
-    <select class="form-select" id="budget-input" onchange="handleBudgetChange()">
+    <input type="text" name="subject" class="form-input" id="subject-input" placeholder="Předmět" />
+    <select name="budget" class="form-select" id="budget-input" onchange="handleBudgetChange()">
       <option value="">Rozpočet projektu...</option>
       <option value="calc">Vypočítáno v kalkulačce</option>
       <option value="do15">Do 15 000 Kč</option>
@@ -1317,8 +1317,8 @@
       <option value="discuss">Chci nejdřív prokonzultovat</option>
     </select>
     <div class="budget-hint" id="budget-hint"></div>
-    <textarea class="form-input" id="message-input" placeholder="Popište váš projekt..."></textarea>
-    <button type="submit" class="btn-submit">Odeslat zprávu →</button>
+    <textarea name="message" class="form-input" id="message-input" placeholder="Popište váš projekt..."></textarea>
+    <button type="submit" class="btn-submit" id="submit-btn">Odeslat zprávu →</button>
   </form>
 
   <div class="contact-direct">
@@ -1374,18 +1374,55 @@
   }
 
   // FORM
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('.btn-submit');
-    btn.textContent = 'Odesláno ✓';
-    btn.style.background = '#4CAF50';
-    btn.style.color = '#fff';
-    setTimeout(() => {
-      btn.textContent = 'Odeslat zprávu →';
-      btn.style.background = '';
-      btn.style.color = '';
-      e.target.reset();
-    }, 3000);
+    const form = e.target;
+    const btn = form.querySelector('.btn-submit');
+    btn.textContent = 'Odesílám...';
+    btn.disabled = true;
+
+    // Pokud je budget "calc", přidej skutečnou hodnotu do zprávy
+    const budgetSel = document.getElementById('budget-input');
+    if (budgetSel && budgetSel.value === 'calc') {
+      const msgEl = document.getElementById('message-input');
+      if (msgEl && !msgEl.value.includes('Celkem:')) {
+        msgEl.value = (msgEl.value ? msgEl.value + '\n\n' : '') +
+          'Rozpočet z kalkulačky: od ' + _calcTotal.toLocaleString('cs-CZ') + ' Kč';
+      }
+    }
+
+    try {
+      const res = await fetch('https://formspree.io/f/xbdzopzd', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        btn.textContent = 'Odesláno ✓';
+        btn.style.background = '#4CAF50';
+        btn.style.color = '#fff';
+        setTimeout(() => {
+          btn.textContent = 'Odeslat zprávu →';
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.disabled = false;
+          form.reset();
+          document.getElementById('budget-hint').style.display = 'none';
+        }, 3500);
+      } else {
+        throw new Error();
+      }
+    } catch {
+      btn.textContent = 'Chyba — zkuste znovu';
+      btn.style.background = '#c0392b';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'Odeslat zprávu →';
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 3000);
+    }
   }
 
   // CALCULATOR
