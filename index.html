@@ -920,22 +920,22 @@
     }
     .tooltip-bubble {
       display: none;
-      position: absolute;
-      left: 20px;
-      top: -8px;
-      width: 220px;
+      position: fixed;
+      width: 260px;
       background: var(--black);
       color: #ccc;
       font-size: 0.72rem;
-      line-height: 1.5;
-      padding: 10px 12px;
-      border-radius: 6px;
-      border: 1px solid #2a2a2a;
-      z-index: 10;
+      line-height: 1.6;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      z-index: 9999;
       font-weight: 300;
       pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     }
-    .tooltip-wrap:hover .tooltip-bubble { display: block; }
+    .tooltip-bubble strong { color: var(--white); }
+    .tooltip-wrap .tooltip-bubble { top: auto; left: auto; }
 
     /* Price counter transition */
     .price-value { transition: color 0.2s; }
@@ -1566,6 +1566,32 @@
 </footer>
 
 <script>
+  // TOOLTIP POSITIONING
+  document.querySelectorAll('.tooltip-wrap').forEach(wrap => {
+    wrap.addEventListener('mouseenter', () => {
+      const bubble = wrap.querySelector('.tooltip-bubble');
+      if (!bubble) return;
+      bubble.style.display = 'block';
+      const icon = wrap.querySelector('.tooltip-icon');
+      const rect = icon.getBoundingClientRect();
+      const bw = bubble.offsetWidth;
+      const bh = bubble.offsetHeight;
+      // Position above the icon, centered
+      let top = rect.top - bh - 8;
+      let left = rect.left + rect.width / 2 - bw / 2;
+      // Keep within viewport
+      if (top < 8) top = rect.bottom + 8;
+      if (left < 8) left = 8;
+      if (left + bw > window.innerWidth - 8) left = window.innerWidth - bw - 8;
+      bubble.style.top = top + 'px';
+      bubble.style.left = left + 'px';
+    });
+    wrap.addEventListener('mouseleave', () => {
+      const bubble = wrap.querySelector('.tooltip-bubble');
+      if (bubble) bubble.style.display = 'none';
+    });
+  });
+
   // HAMBURGER MENU
   function toggleMenu() {
     const nav = document.getElementById('nav-links');
