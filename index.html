@@ -719,6 +719,7 @@
     }
     .payment-select option { background: #1a1616; }
     .payment-select:focus { outline: none; border-color: var(--accent); }
+    .price-max { font-size: 0.8rem; color: rgba(249,246,240,0.35); margin-top: 2px; margin-bottom: 4px; }
     .price-installment { font-size: 0.7rem; color: rgba(249,246,240,0.5); margin-top: 2px; }
 
     /* Calc section two-column layout */
@@ -1159,6 +1160,7 @@
             <div>
               <div class="mini-calc-price-lbl">Orientační cena</div>
               <div class="mini-calc-price" id="mini-price">od 15 000 Kč</div>
+              <div style="font-size:0.7rem; color:var(--gray); margin-top:2px;" id="mini-price-max">až 57 000 Kč</div>
             </div>
             <div class="mini-calc-badge">bez závazku</div>
           </div>
@@ -1268,7 +1270,7 @@
               <input type="checkbox" name="calc-addon" value="12000" data-label="Cenová kalkulačka" onchange="updateCalc()">
               <div class="addon-inner">
                 <div class="addon-left">
-                  <span class="addon-name" data-i18n="addon2.name">Cenová kalkulačka</span>
+                  <span class="addon-name">Cenová kalkulačka <span class="tooltip-wrap"><i class="tooltip-icon">i</i><span class="tooltip-bubble">Interaktivní konfigurátor jako ten, který právě používáte na tomto webu.<br><br><strong>Jednoduchá</strong> (výběr ze 3–5 možností, fixní ceny): +12 000 Kč<br><strong>Střední</strong> (kombinace více parametrů, živý výpočet): +16 000 Kč<br><strong>Komplexní</strong> (jako tato na webu, animace, splátky, formulář): +25 000 Kč</span></span></span>
                   <span class="addon-desc" data-i18n="addon2.desc">Interaktivní konfigurátor pro vaše zákazníky</span>
                   <span class="addon-price">+12 000 – 25 000 Kč</span>
                 </div>
@@ -1338,6 +1340,7 @@
       <div class="calc-summary">
         <div class="price-label" data-i18n="calc.price.label">Orientační cena</div>
         <div class="price-value" id="calc-price">od 15 000 Kč</div>
+        <div class="price-max" id="calc-price-max">až 72 000 Kč</div>
         <div class="price-installment" id="calc-price-sub"></div>
         <div class="payment-toggle">
           <div class="payment-toggle-label">Způsob platby</div>
@@ -1681,12 +1684,18 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCalc(); });
 
   let _miniSelectedValue = 15000;
+  // Addons max: gallery+calc+blog+cms+multilang = 3000+12000+7000+8000+7000 = 37000
+  const MINI_ADDONS_MAX = 37000;
   function selectMiniType(btn, value) {
     _miniSelectedValue = value;
     document.querySelectorAll('.mini-type-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     const el = document.getElementById('mini-price');
+    const elMax = document.getElementById('mini-price-max');
+    const pagesMax = value === 15000 ? 0 : 12000; // microsite má 1 stránku
+    const miniMax = value + MINI_ADDONS_MAX + pagesMax + 5000; // +express
     if (el) el.textContent = 'od ' + formatKc(value);
+    if (elMax) elMax.textContent = 'až ' + formatKc(miniMax);
   }
   function openCalcFromMini() {
     // Pre-select the matching type in the main calc
@@ -1772,6 +1781,19 @@
     _calcMonths = getPaymentMonths();
     const displayTotal = Math.round(total * (SURCHARGES[_calcMonths] || 1.0));
     animatePrice(displayTotal);
+
+    // Maximální cena = min + nezvolené doplňky + nevybrané stránky + express (pokud nevybráno)
+    let maxExtra = 0;
+    document.querySelectorAll('input[name="calc-addon"]').forEach(el => {
+      if (!el.checked) maxExtra += parseInt(el.value);
+    });
+    const currentPages = parseInt(document.querySelector('input[name="calc-pages"]:checked')?.value || '0');
+    const isMicrosite = project && project.value === '15000';
+    if (!isMicrosite && currentPages < 12000) maxExtra += (12000 - currentPages);
+    if (!isExpress) maxExtra += 5000;
+    const maxTotal = Math.round((total + maxExtra) * (SURCHARGES[_calcMonths] || 1.0));
+    const maxEl = document.getElementById('calc-price-max');
+    if (maxEl) maxEl.textContent = maxExtra > 0 ? 'až ' + formatKc(maxTotal) : '';
 
     // Doba realizace
     const addonsCount = document.querySelectorAll('input[name="calc-addon"]:checked').length;
