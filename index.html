@@ -1790,7 +1790,7 @@
     const currentPages = parseInt(document.querySelector('input[name="calc-pages"]:checked')?.value || '0');
     const isMicrosite = project && project.value === '15000';
     if (!isMicrosite && currentPages < 12000) maxExtra += (12000 - currentPages);
-    if (!isExpress) maxExtra += 5000;
+    if (!(timeline && parseInt(timeline.value) > 0)) maxExtra += 5000;
     const maxTotal = Math.round((total + maxExtra) * (SURCHARGES[_calcMonths] || 1.0));
     const maxEl = document.getElementById('calc-price-max');
     if (maxEl) maxEl.textContent = maxExtra > 0 ? 'až ' + formatKc(maxTotal) : '';
