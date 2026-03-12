@@ -1281,27 +1281,6 @@
           </div>
         </div>
       </div>
-      <div class="portfolio-card">
-        <a href="https://ecommerce-valuator-production.up.railway.app" target="_blank" rel="noopener">
-          <img src="portfolio/valuator.png" alt="Ecommerce Valuator" class="portfolio-img" />
-        </a>
-        <div class="portfolio-info">
-          <div class="portfolio-client" data-i18n="p5.client">Webová aplikace</div>
-          <div class="portfolio-name">Valuator</div>
-          <div class="portfolio-desc" data-i18n="p5.desc">Nástroj pro valuaci e-commerce projektů. Zadáte data, aplikace vypočítá odhadovanou hodnotu vašeho obchodu.</div>
-          <div class="portfolio-tags">
-            <span class="tag">Web aplikace</span>
-            <span class="tag">E-commerce</span>
-            <span class="tag">Kalkulačka</span>
-          </div>
-          <a href="https://ecommerce-valuator-production.up.railway.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit aplikaci →</a>
-          <div class="case-study">
-            <div class="case-study-item"><span class="case-label">Problém</span><span>Majitelé e-shopů nevěděli, jak odhadnout tržní hodnotu svého obchodu před prodejem nebo investicí.</span></div>
-            <div class="case-study-item"><span class="case-label">Řešení</span><span>Webová aplikace s jednoduchým formulářem, která na základě klíčových metrik automaticky vypočítá valuaci.</span></div>
-            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Funkční nástroj nasazený na vlastní doméně, připravený pro reálné použití majiteli e-shopů.</span></div>
-          </div>
-        </div>
-      </div>
       <div class="portfolio-card" style="border-style: dashed; display:flex; align-items:center; justify-content:center; min-height:200px;">
         <div style="text-align:center; color:var(--gray); padding:40px;">
           <div style="font-size:2rem; margin-bottom:12px;">+</div>
@@ -1313,7 +1292,24 @@
     <!-- Ve vývoji -->
     <div style="margin-top: 64px;">
       <div class="section-tag" style="margin-bottom: 20px;" data-i18n="portfolio.wip">Aktuálně ve vývoji</div>
-      <div class="portfolio-card" style="max-width: 600px;">
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; max-width: 900px;">
+      <div class="portfolio-card">
+        <div style="position:relative;">
+          <img src="portfolio/valuator.png" alt="Valuator" class="portfolio-img" />
+          <div style="position:absolute;top:12px;left:12px;background:var(--accent);color:var(--black);font-size:0.68rem;font-weight:600;letter-spacing:0.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Ve vývoji</div>
+        </div>
+        <div class="portfolio-info">
+          <div class="portfolio-client" data-i18n="p5.client">Webová aplikace</div>
+          <div class="portfolio-name">Valuator</div>
+          <div class="portfolio-desc" data-i18n="p5.desc">Nástroj pro valuaci e-commerce projektů. Zadáte data, aplikace vypočítá odhadovanou hodnotu vašeho obchodu.</div>
+          <div class="portfolio-tags">
+            <span class="tag">Web aplikace</span>
+            <span class="tag">E-commerce</span>
+            <span class="tag">Kalkulačka</span>
+          </div>
+        </div>
+      </div>
+      <div class="portfolio-card">
         <div style="position:relative;">
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
             <img src="portfolio/bozatmv.png" alt="BOZA reko, tmavá verze" style="width:100%; height:200px; object-fit:cover; object-position:left top; display:block;" />
@@ -1332,6 +1328,7 @@
           </div>
         </div>
       </div>
+      </div><!-- /wip grid -->
     </div>
   </div>
 </section>
