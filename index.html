@@ -711,13 +711,64 @@
     .calc-included strong { color: var(--white); font-weight: 500; }
     .payment-toggle { margin: 16px 0 12px; }
     .payment-toggle-label { font-size: 0.68rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
-    .payment-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-    .payment-opt { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 0.78rem; transition: border-color 0.15s; user-select: none; }
-    .payment-opt:hover { border-color: rgba(201,168,76,0.4); }
-    .payment-opt input[type="radio"] { accent-color: var(--accent); margin: 0; flex-shrink: 0; }
-    .payment-opt.selected { border-color: var(--accent); background: rgba(201,168,76,0.08); }
-    .payment-surcharge { color: var(--accent); font-size: 0.66rem; font-weight: 600; margin-left: auto; }
+    .payment-select {
+      width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+      color: var(--white); font-size: 0.85rem; cursor: pointer;
+      font-family: inherit;
+    }
+    .payment-select option { background: #1a1616; }
+    .payment-select:focus { outline: none; border-color: var(--accent); }
     .price-installment { font-size: 0.7rem; color: rgba(249,246,240,0.5); margin-top: 2px; }
+
+    /* Self-pricing card */
+    .self-pricing-card {
+      margin-top: 48px;
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 16px;
+      padding: 28px 32px;
+      background: rgba(201,168,76,0.04);
+      max-width: 680px;
+    }
+    .self-pricing-eyebrow {
+      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--accent); margin-bottom: 16px; font-weight: 600;
+    }
+    .self-pricing-main { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+    .self-pricing-price { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
+    .self-pricing-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .self-pricing-breakdown {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 0.72rem; color: rgba(249,246,240,0.45);
+      border-top: 1px solid rgba(255,255,255,0.07); padding-top: 14px;
+    }
+
+    /* Calculator modal */
+    .calc-modal {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(10,9,9,0.88);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 40px 20px 60px;
+      overflow-y: auto;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s;
+    }
+    .calc-modal.open { opacity: 1; pointer-events: all; }
+    .calc-modal-inner {
+      background: var(--white); border-radius: 16px;
+      width: 100%; max-width: 1100px;
+      position: relative; padding: 48px 48px 40px;
+    }
+    .calc-modal-inner .calc-summary { position: static; }
+    .calc-modal-close {
+      position: absolute; top: 18px; right: 22px;
+      background: none; border: none; font-size: 1.4rem;
+      cursor: pointer; color: var(--gray); line-height: 1;
+      padding: 4px 8px; border-radius: 4px; transition: color 0.15s;
+    }
+    .calc-modal-close:hover { color: var(--black); }
+    .calc-modal-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; margin: 0 0 32px; }
     .addon-check {
       width: 20px; height: 20px;
       border: 1.5px solid var(--light-gray);
@@ -878,6 +929,10 @@
       .addons-grid { grid-template-columns: 1fr; }
       .page-options { flex-wrap: wrap; }
       .calc-summary { position: static; }
+      .calc-modal { padding: 0; align-items: stretch; }
+      .calc-modal-inner { border-radius: 0; padding: 28px 20px 40px; min-height: 100vh; }
+      .self-pricing-card { padding: 20px; }
+      .self-pricing-main { flex-direction: column; gap: 12px; align-items: flex-start; }
     }
   </style>
 </head>
@@ -890,7 +945,7 @@
     <ul class="nav-links" id="nav-links">
       <li><a href="#o-mne" data-i18n="nav.about">O mně</a></li>
       <li><a href="#sluzby" data-i18n="nav.services">Služby</a></li>
-      <li><a href="#kalkulacka" data-i18n="nav.calc">Kalkulačka</a></li>
+      <li><a href="#kalkulacka" onclick="openCalc(); return false;" data-i18n="nav.calc">Kalkulačka</a></li>
       <li><a href="#portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
       <li><a href="#kontakt" data-i18n="nav.contact">Kontakt</a></li>
     </ul>
@@ -1018,6 +1073,36 @@
     <h2 class="section-title" data-i18n="calc.title">Spočítejte si cenu.</h2>
     <p class="calc-intro" data-i18n="calc.intro">Vyberte co potřebujete a okamžitě uvidíte orientační cenu. Ceny jsou orientační, při standardním rozsahu platí na 99 %. Přesnou nabídku dostanete do 24 hodin.</p>
 
+    <!-- Self-pricing callout -->
+    <div class="self-pricing-card">
+      <div class="self-pricing-eyebrow">Příklad: tento web</div>
+      <div class="self-pricing-main">
+        <div class="self-pricing-price">od 47 000 Kč</div>
+        <div class="self-pricing-tags">
+          <span class="tag">Prezentační web</span>
+          <span class="tag">5 stránek</span>
+          <span class="tag">Kalkulačka</span>
+          <span class="tag">Vícejazyčný</span>
+        </div>
+      </div>
+      <div class="self-pricing-breakdown">
+        <span>Prezentační web — 22 000 Kč</span>
+        <span>+ 5 stránek — 6 000 Kč</span>
+        <span>+ Kalkulačka — 12 000 Kč</span>
+        <span>+ Vícejazyčný — 7 000 Kč</span>
+      </div>
+    </div>
+
+    <button onclick="openCalc()" class="btn-primary" style="margin-top: 40px;" data-i18n="calc.open">Spočítat cenu svého projektu →</button>
+  </div>
+</section>
+
+<!-- Calculator Modal -->
+<div id="calc-modal" class="calc-modal" onclick="closeCalcOutside(event)">
+  <div class="calc-modal-inner">
+    <button class="calc-modal-close" onclick="closeCalc()">✕</button>
+    <div class="section-tag" style="margin-bottom:8px">Cenový odhad</div>
+    <h3 class="calc-modal-title">Spočítejte si cenu.</h3>
     <div class="calc-layout">
       <div class="calc-options">
 
@@ -1182,24 +1267,12 @@
         <div class="price-installment" id="calc-price-sub"></div>
         <div class="payment-toggle">
           <div class="payment-toggle-label">Způsob platby</div>
-          <div class="payment-opts">
-            <label class="payment-opt selected">
-              <input type="radio" name="payment" value="1" onchange="updateCalc();updatePaymentStyle()" checked />
-              <span>Jednorázově</span>
-            </label>
-            <label class="payment-opt">
-              <input type="radio" name="payment" value="2" onchange="updateCalc();updatePaymentStyle()" />
-              <span>2 splátky</span><span class="payment-surcharge">+5%</span>
-            </label>
-            <label class="payment-opt">
-              <input type="radio" name="payment" value="3" onchange="updateCalc();updatePaymentStyle()" />
-              <span>3 splátky</span><span class="payment-surcharge">+10%</span>
-            </label>
-            <label class="payment-opt">
-              <input type="radio" name="payment" value="6" onchange="updateCalc();updatePaymentStyle()" />
-              <span>6 splátek</span><span class="payment-surcharge">+20%</span>
-            </label>
-          </div>
+          <select name="payment" class="payment-select" onchange="updateCalc()">
+            <option value="1">Jednorázově</option>
+            <option value="2">2 splátky (+5 %)</option>
+            <option value="3">3 splátky (+10 %)</option>
+            <option value="6">6 splátek (+20 %)</option>
+          </select>
         </div>
         <div class="price-note" data-i18n="calc.price.note">Nezávazný odhad. Přesnou nabídku dostanete do 24 hodin.</div>
         <div class="delivery-badge">
@@ -1212,7 +1285,7 @@
             <span class="breakdown-price">15 000 Kč</span>
           </div>
         </div>
-        <a href="#kontakt" class="btn-primary calc-cta" id="calc-cta" data-i18n="calc.cta">Poptat tento projekt →</a>
+        <a href="#kontakt" class="btn-primary calc-cta" id="calc-cta" onclick="closeCalc()" data-i18n="calc.cta">Poptat tento projekt →</a>
         <div class="calc-included">
           <strong>Vždy v ceně:</strong> kontaktní formulář, SEO základ, mobilní verze, nasazení webu, 30 dní podpory po spuštění
         </div>
@@ -1220,7 +1293,7 @@
 
     </div><!-- /calc-layout -->
   </div>
-</section>
+</div><!-- /calc-modal -->
 
 <!-- PORTFOLIO -->
 <section id="portfolio">
@@ -1516,15 +1589,22 @@
   const SURCHARGES = {1: 1.0, 2: 1.05, 3: 1.10, 6: 1.20};
 
   function getPaymentMonths() {
-    const sel = document.querySelector('input[name="payment"]:checked');
+    const sel = document.querySelector('select[name="payment"]');
     return sel ? parseInt(sel.value) : 1;
   }
 
-  function updatePaymentStyle() {
-    document.querySelectorAll('.payment-opt').forEach(el => {
-      el.classList.toggle('selected', el.querySelector('input').checked);
-    });
+  function openCalc() {
+    document.getElementById('calc-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
+  function closeCalc() {
+    document.getElementById('calc-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeCalcOutside(e) {
+    if (e.target === document.getElementById('calc-modal')) closeCalc();
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCalc(); });
 
   function animatePrice(target) {
     if (_calcRafId) cancelAnimationFrame(_calcRafId);
@@ -1672,6 +1752,7 @@
     's4.name':'Modernization & redesign','s4.desc':'Old website that\'s not helping you? I\'ll rebuild it into a modern, fast presentation you can be proud of.',
     's5.name':'Web application','s5.desc':'Need more than a website? A configurator, customer portal or interactive tool built specifically for your business.',
     'services.note':'Have something specific in mind? Write to me and get an exact price within 24 hours.',
+    'calc.open':'Calculate your project price →',
     'calc.tag':'Price estimate','calc.title':'Calculate your price.',
     'calc.intro':'Select what you need and see an estimated price instantly. Prices are indicative and accurate for 99% of standard projects. You\'ll receive an exact quote within 24 hours.',
     'calc.b1':'01&nbsp; Project type','calc.b2':'02&nbsp; Website scope','calc.b3':'03&nbsp; Add-ons','calc.b4':'04&nbsp; Timeline',
