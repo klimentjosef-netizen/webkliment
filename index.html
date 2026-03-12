@@ -709,6 +709,15 @@
     .addon-price { font-size: 0.75rem; color: var(--gray); }
     .calc-included { font-size: 0.72rem; color: rgba(249,246,240,0.55); margin-top: 20px; padding-top: 16px; border-top: 1px solid #2a2a2a; line-height: 1.7; }
     .calc-included strong { color: var(--white); font-weight: 500; }
+    .payment-toggle { margin: 16px 0 12px; }
+    .payment-toggle-label { font-size: 0.68rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+    .payment-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .payment-opt { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 0.78rem; transition: border-color 0.15s; user-select: none; }
+    .payment-opt:hover { border-color: rgba(201,168,76,0.4); }
+    .payment-opt input[type="radio"] { accent-color: var(--accent); margin: 0; flex-shrink: 0; }
+    .payment-opt.selected { border-color: var(--accent); background: rgba(201,168,76,0.08); }
+    .payment-surcharge { color: var(--accent); font-size: 0.66rem; font-weight: 600; margin-left: auto; }
+    .price-installment { font-size: 0.7rem; color: rgba(249,246,240,0.5); margin-top: 2px; }
     .addon-check {
       width: 20px; height: 20px;
       border: 1.5px solid var(--light-gray);
@@ -1170,6 +1179,28 @@
       <div class="calc-summary">
         <div class="price-label" data-i18n="calc.price.label">Orientační cena</div>
         <div class="price-value" id="calc-price">od 15 000 Kč</div>
+        <div class="price-installment" id="calc-price-sub"></div>
+        <div class="payment-toggle">
+          <div class="payment-toggle-label">Způsob platby</div>
+          <div class="payment-opts">
+            <label class="payment-opt selected">
+              <input type="radio" name="payment" value="1" onchange="updateCalc();updatePaymentStyle()" checked />
+              <span>Jednorázově</span>
+            </label>
+            <label class="payment-opt">
+              <input type="radio" name="payment" value="2" onchange="updateCalc();updatePaymentStyle()" />
+              <span>2 splátky</span><span class="payment-surcharge">+5%</span>
+            </label>
+            <label class="payment-opt">
+              <input type="radio" name="payment" value="3" onchange="updateCalc();updatePaymentStyle()" />
+              <span>3 splátky</span><span class="payment-surcharge">+10%</span>
+            </label>
+            <label class="payment-opt">
+              <input type="radio" name="payment" value="6" onchange="updateCalc();updatePaymentStyle()" />
+              <span>6 splátek</span><span class="payment-surcharge">+20%</span>
+            </label>
+          </div>
+        </div>
         <div class="price-note" data-i18n="calc.price.note">Nezávazný odhad. Přesnou nabídku dostanete do 24 hodin.</div>
         <div class="delivery-badge">
           <span class="delivery-icon">⏱</span>
@@ -1406,7 +1437,16 @@
     const hint = document.getElementById('budget-hint');
     if (!sel || !hint) return;
     if (sel.value === 'calc') {
-      hint.textContent = 'Aktuální hodnota z kalkulačky: od ' + _calcTotal.toLocaleString('cs-CZ') + ' Kč';
+      let hintText;
+      if (_calcMonths > 1) {
+        const finalTotal = Math.round(_calcTotal * (SURCHARGES[_calcMonths] || 1));
+        const installAmt = Math.round(finalTotal / _calcMonths);
+        const pct = Math.round((SURCHARGES[_calcMonths] - 1) * 100);
+        hintText = _calcMonths + ' splátky po od ' + installAmt.toLocaleString('cs-CZ') + ' Kč/měs. (celkem od ' + finalTotal.toLocaleString('cs-CZ') + ' Kč, navýšení +' + pct + '%)';
+      } else {
+        hintText = 'Jednorázově: od ' + _calcTotal.toLocaleString('cs-CZ') + ' Kč';
+      }
+      hint.textContent = 'Z kalkulačky: ' + hintText;
       hint.style.display = 'block';
     } else {
       hint.style.display = 'none';
@@ -1471,7 +1511,20 @@
 
   let _calcDisplayedPrice = 15000;
   let _calcTotal = 15000;
+  let _calcMonths = 1;
   let _calcRafId = null;
+  const SURCHARGES = {1: 1.0, 2: 1.05, 3: 1.10, 6: 1.20};
+
+  function getPaymentMonths() {
+    const sel = document.querySelector('input[name="payment"]:checked');
+    return sel ? parseInt(sel.value) : 1;
+  }
+
+  function updatePaymentStyle() {
+    document.querySelectorAll('.payment-opt').forEach(el => {
+      el.classList.toggle('selected', el.querySelector('input').checked);
+    });
+  }
 
   function animatePrice(target) {
     if (_calcRafId) cancelAnimationFrame(_calcRafId);
@@ -1479,13 +1532,27 @@
     const startTime = performance.now();
     const duration = 350;
     const el = document.getElementById('calc-price');
+    const sub = document.getElementById('calc-price-sub');
+    const months = _calcMonths;
     function tick(now) {
       const t = Math.min((now - startTime) / duration, 1);
       const ease = 1 - Math.pow(1 - t, 3);
       const cur = Math.round(start + (target - start) * ease);
-      el.textContent = 'od ' + formatKc(cur);
+      if (months > 1) {
+        el.textContent = months + '× od ' + formatKc(Math.round(cur / months)) + '/měs.';
+      } else {
+        el.textContent = 'od ' + formatKc(cur);
+      }
       if (t < 1) { _calcRafId = requestAnimationFrame(tick); }
       else { _calcDisplayedPrice = target; }
+    }
+    if (sub) {
+      if (months > 1) {
+        const pct = Math.round((SURCHARGES[months] - 1) * 100);
+        sub.textContent = 'navýšení +' + pct + '% · celkem od ' + formatKc(target);
+      } else {
+        sub.textContent = '';
+      }
     }
     _calcRafId = requestAnimationFrame(tick);
   }
@@ -1531,9 +1598,11 @@
       lines.push({ name: timeline.dataset.label, price: v });
     }
 
-    // Animovaná cena
+    // Animovaná cena (se splátkovým navýšením)
     _calcTotal = total;
-    animatePrice(total);
+    _calcMonths = getPaymentMonths();
+    const displayTotal = Math.round(total * (SURCHARGES[_calcMonths] || 1.0));
+    animatePrice(displayTotal);
 
     // Doba realizace
     const addonsCount = document.querySelectorAll('input[name="calc-addon"]:checked').length;
@@ -1554,10 +1623,15 @@
       const subj = document.getElementById('subject-input');
       const msg = document.getElementById('message-input');
       const budget = document.getElementById('budget-input');
-      if (subj) subj.value = 'Poptávka: ' + (project ? project.dataset.label : '') + ' od ' + formatKc(total);
+      const finalTotal = Math.round(total * (SURCHARGES[_calcMonths] || 1));
+      const installAmt = _calcMonths > 1 ? Math.round(finalTotal / _calcMonths) : null;
+      const paymentLine = _calcMonths > 1
+        ? '\nPlatba: ' + _calcMonths + ' splátky po od ' + formatKc(installAmt) + '/měs. (celkem od ' + formatKc(finalTotal) + ', +' + Math.round((SURCHARGES[_calcMonths]-1)*100) + '%)'
+        : '\nPlatba: Jednorázově';
+      if (subj) subj.value = 'Poptávka: ' + (project ? project.dataset.label : '') + ' od ' + formatKc(_calcMonths > 1 ? installAmt : total) + (_calcMonths > 1 ? '/měs.' : '');
       if (msg) msg.value = 'Konfigurace z kalkulačky:\n' +
         lines.map(l => '- ' + l.name + ': ' + formatKc(l.price)).join('\n') +
-        '\n\nCelkem: od ' + formatKc(total) + '\n\n';
+        '\n\nZákladní cena: od ' + formatKc(total) + paymentLine + '\n\n';
       if (budget) { budget.value = 'calc'; handleBudgetChange(); }
     };
 
