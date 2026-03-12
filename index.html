@@ -408,6 +408,8 @@
       overflow: hidden;
       border: 1px solid var(--light-gray);
       transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
     }
     .portfolio-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
 
@@ -1478,7 +1480,7 @@
     <!-- Ve vývoji -->
     <div style="margin-top: 64px;">
       <div class="section-tag" style="margin-bottom: 20px;" data-i18n="portfolio.wip">Aktuálně ve vývoji</div>
-      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; max-width: 900px; align-items: start;">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px;">
       <div class="portfolio-card">
         <div style="position:relative;">
           <img src="portfolio/valuator.png" alt="Valuator" class="portfolio-img" />
