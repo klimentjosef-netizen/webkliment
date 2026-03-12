@@ -721,27 +721,71 @@
     .payment-select:focus { outline: none; border-color: var(--accent); }
     .price-installment { font-size: 0.7rem; color: rgba(249,246,240,0.5); margin-top: 2px; }
 
+    /* Calc section two-column layout */
+    .calc-section-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 80px;
+      align-items: center;
+    }
+    .calc-section-left {}
+    .calc-section-right { position: sticky; top: 100px; }
+
     /* Self-pricing card */
     .self-pricing-card {
-      margin-top: 48px;
-      border: 1px solid rgba(201,168,76,0.25);
+      margin-top: 40px;
+      border: 1px solid rgba(201,168,76,0.2);
       border-radius: 16px;
-      padding: 28px 32px;
+      padding: 28px 28px;
       background: rgba(201,168,76,0.04);
-      max-width: 680px;
     }
     .self-pricing-eyebrow {
-      font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--accent); margin-bottom: 16px; font-weight: 600;
+      font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--accent); margin-bottom: 10px; font-weight: 600;
     }
-    .self-pricing-main { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
-    .self-pricing-price { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--accent); white-space: nowrap; }
-    .self-pricing-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-    .self-pricing-breakdown {
-      display: flex; gap: 20px; flex-wrap: wrap;
-      font-size: 0.72rem; color: rgba(249,246,240,0.45);
-      border-top: 1px solid rgba(255,255,255,0.07); padding-top: 14px;
+    .self-pricing-story {
+      font-size: 0.9rem; color: rgba(249,246,240,0.7); margin: 0 0 20px; line-height: 1.6;
     }
+    .self-pricing-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+    .self-pricing-price { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--accent); }
+    .self-pricing-period { font-size: 0.75rem; color: rgba(249,246,240,0.4); }
+    .self-pricing-breakdown { display: flex; flex-direction: column; gap: 0; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 16px; }
+    .self-pricing-item {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: rgba(249,246,240,0.55);
+      padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .self-pricing-item--last { border-bottom: none; color: var(--white); font-weight: 500; }
+    .self-pricing-item--last span:last-child { color: var(--accent); }
+
+    /* Mini calculator card */
+    .mini-calc-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.18), 0 8px 24px rgba(0,0,0,0.08);
+      color: var(--black);
+    }
+    .mini-calc-header {
+      font-size: 1.05rem; font-weight: 600; margin-bottom: 20px; color: var(--black);
+    }
+    .mini-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .mini-type-btn {
+      background: var(--white); border: 1.5px solid var(--light-gray);
+      border-radius: 10px; padding: 13px 12px; cursor: pointer;
+      text-align: left; transition: all 0.15s; font-size: 0.8rem;
+      font-weight: 500; display: flex; flex-direction: column; gap: 4px;
+      color: var(--black); font-family: inherit;
+    }
+    .mini-type-btn span { font-size: 0.67rem; color: var(--gray); font-weight: 400; }
+    .mini-type-btn:hover { border-color: var(--accent); }
+    .mini-type-btn.active { border-color: var(--accent); background: rgba(201,168,76,0.07); }
+    .mini-calc-divider { border: none; border-top: 1px solid var(--light-gray); margin: 4px 0 20px; }
+    .mini-calc-price-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .mini-calc-price-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--gray); margin-bottom: 4px; }
+    .mini-calc-price { font-family: var(--font-display); font-size: 1.7rem; font-weight: 700; color: var(--accent); transition: all 0.2s; }
+    .mini-calc-badge { font-size: 0.62rem; background: rgba(201,168,76,0.12); color: var(--accent); border-radius: 20px; padding: 5px 10px; font-weight: 600; white-space: nowrap; }
+    .mini-calc-note { font-size: 0.66rem; color: var(--gray); text-align: center; margin-top: 12px; }
 
     /* Calculator modal */
     .calc-modal {
@@ -931,8 +975,9 @@
       .calc-summary { position: static; }
       .calc-modal { padding: 0; align-items: stretch; }
       .calc-modal-inner { border-radius: 0; padding: 28px 20px 40px; min-height: 100vh; }
+      .calc-section-layout { grid-template-columns: 1fr; gap: 40px; }
+      .calc-section-right { position: static; }
       .self-pricing-card { padding: 20px; }
-      .self-pricing-main { flex-direction: column; gap: 12px; align-items: flex-start; }
     }
   </style>
 </head>
@@ -1069,31 +1114,63 @@
 <!-- CALCULATOR -->
 <section id="kalkulacka" class="calculator-section">
   <div class="calc-container">
-    <div class="section-tag" data-i18n="calc.tag">Cenový odhad</div>
-    <h2 class="section-title" data-i18n="calc.title">Spočítejte si cenu.</h2>
-    <p class="calc-intro" data-i18n="calc.intro">Vyberte co potřebujete a okamžitě uvidíte orientační cenu. Ceny jsou orientační, při standardním rozsahu platí na 99 %. Přesnou nabídku dostanete do 24 hodin.</p>
+    <div class="calc-section-layout">
 
-    <!-- Self-pricing callout -->
-    <div class="self-pricing-card">
-      <div class="self-pricing-eyebrow">Příklad: tento web</div>
-      <div class="self-pricing-main">
-        <div class="self-pricing-price">od 47 000 Kč</div>
-        <div class="self-pricing-tags">
-          <span class="tag">Prezentační web</span>
-          <span class="tag">5 stránek</span>
-          <span class="tag">Kalkulačka</span>
-          <span class="tag">Vícejazyčný</span>
+      <!-- Left: storytelling + self-pricing -->
+      <div class="calc-section-left">
+        <div class="section-tag" data-i18n="calc.tag">Cenový odhad</div>
+        <h2 class="section-title" data-i18n="calc.title">Spočítejte si cenu.</h2>
+        <p class="calc-intro" data-i18n="calc.intro">Ceny jsou transparentní a fixní. Žádné překvapení po podpisu. Orientační cena platí na 99 % — přesnou nabídku dostanete do 24 hodin.</p>
+
+        <!-- Self-pricing: clear storytelling -->
+        <div class="self-pricing-card">
+          <div class="self-pricing-eyebrow">Transparentnost na prvním místě</div>
+          <p class="self-pricing-story">Tento web, který právě čtete — byl postaven stejnou metodou. Kdybych ho dělal pro vás, stál by:</p>
+          <div class="self-pricing-price-row">
+            <span class="self-pricing-price">od 47 000 Kč</span>
+            <span class="self-pricing-period">jednorázově</span>
+          </div>
+          <div class="self-pricing-breakdown">
+            <div class="self-pricing-item"><span>Prezentační web</span><span>22 000 Kč</span></div>
+            <div class="self-pricing-item"><span>5 sekcí a stránek</span><span>+ 6 000 Kč</span></div>
+            <div class="self-pricing-item"><span>Cenová kalkulačka</span><span>+ 12 000 Kč</span></div>
+            <div class="self-pricing-item self-pricing-item--last"><span>Vícejazyčná verze</span><span>+ 7 000 Kč</span></div>
+          </div>
         </div>
       </div>
-      <div class="self-pricing-breakdown">
-        <span>Prezentační web — 22 000 Kč</span>
-        <span>+ 5 stránek — 6 000 Kč</span>
-        <span>+ Kalkulačka — 12 000 Kč</span>
-        <span>+ Vícejazyčný — 7 000 Kč</span>
-      </div>
-    </div>
 
-    <button onclick="openCalc()" class="btn-primary" style="margin-top: 40px;" data-i18n="calc.open">Spočítat cenu svého projektu →</button>
+      <!-- Right: mini calculator card -->
+      <div class="calc-section-right">
+        <div class="mini-calc-card">
+          <div class="mini-calc-header">Jaký projekt máte?</div>
+          <div class="mini-type-grid">
+            <button class="mini-type-btn active" onclick="selectMiniType(this, 15000)">
+              Microsite<span>od 15 000 Kč</span>
+            </button>
+            <button class="mini-type-btn" onclick="selectMiniType(this, 22000)">
+              Prezentační web<span>od 22 000 Kč</span>
+            </button>
+            <button class="mini-type-btn" onclick="selectMiniType(this, 35000)">
+              E-shop<span>od 35 000 Kč</span>
+            </button>
+            <button class="mini-type-btn" onclick="selectMiniType(this, 20000)">
+              Redesign webu<span>od 20 000 Kč</span>
+            </button>
+          </div>
+          <hr class="mini-calc-divider" />
+          <div class="mini-calc-price-area">
+            <div>
+              <div class="mini-calc-price-lbl">Orientační cena</div>
+              <div class="mini-calc-price" id="mini-price">od 15 000 Kč</div>
+            </div>
+            <div class="mini-calc-badge">bez závazku</div>
+          </div>
+          <button onclick="openCalcFromMini()" class="btn-primary" style="width:100%; justify-content:center;">Spočítat přesnou cenu →</button>
+          <div class="mini-calc-note">Přesná nabídka do 24 h · Fixní cena</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -1605,6 +1682,21 @@
     if (e.target === document.getElementById('calc-modal')) closeCalc();
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCalc(); });
+
+  let _miniSelectedValue = 15000;
+  function selectMiniType(btn, value) {
+    _miniSelectedValue = value;
+    document.querySelectorAll('.mini-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const el = document.getElementById('mini-price');
+    if (el) el.textContent = 'od ' + formatKc(value);
+  }
+  function openCalcFromMini() {
+    // Pre-select the matching type in the main calc
+    const radio = document.querySelector(`input[name="calc-project"][value="${_miniSelectedValue}"]`);
+    if (radio) { radio.checked = true; updateCalc(); }
+    openCalc();
+  }
 
   function animatePrice(target) {
     if (_calcRafId) cancelAnimationFrame(_calcRafId);
