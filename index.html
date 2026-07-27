@@ -272,9 +272,11 @@
       position: absolute;
       inset: 0;
       background:
+        radial-gradient(55% 45% at 80% 14%, rgba(201,168,76,0.28), transparent 62%),
         linear-gradient(to right, var(--black) 0%, transparent 25%),
         linear-gradient(to top, var(--black) 0%, var(--black) 20%, transparent 60%);
       pointer-events: none;
+      mix-blend-mode: normal;
     }
     .hero-photo {
       width: 100%;
@@ -987,7 +989,12 @@
     /* RESPONSIVE */
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
+      /* On mobile drop the heavy portrait but keep the credibility stats as a black band */
+      .hero-right { min-height: auto; padding: 32px 24px; justify-content: center; }
+      .hero-photo-wrap { display: none; }
+      .hero-right::before { display: none; }
+      .hero-stats { margin: 0; gap: 12px; }
+      .hero-stats .stat-number { font-size: 1.7rem; }
       .about { grid-template-columns: 1fr; gap: 40px; }
       .about-benefits { position: static; }
       .services-grid { grid-template-columns: 1fr; }
@@ -1082,10 +1089,10 @@
       Míň keců,<br><em>víc stylu.</em>
     </h1>
     <p class="hero-desc" data-i18n="hero.desc">
-      Vaše nová digitální tvář.
+      Navrhuju a stavím moderní weby a webové aplikace na míru — pro firmy a živnostníky, kteří chtějí vypadat líp než konkurence. Rychle a bez agenturní složitosti.
     </p>
     <div class="hero-cta">
-      <a href="#kontakt" class="btn-primary" data-i18n="hero.cta1">Pojďme na to →</a>
+      <a href="#kalkulacka" onclick="openCalc(); return false;" class="btn-primary" data-i18n="hero.cta1">Spočítat cenu →</a>
       <a href="#portfolio" class="btn-secondary" data-i18n="hero.cta2">Ukázky prací</a>
     </div>
   </div>
@@ -2013,8 +2020,8 @@
     'hero.badge':'Currently accepting projects',
     'hero.tag':'Web Developer · Ostrava',
     'hero.title':'Less talk,<br><em>more style.</em>',
-    'hero.desc':'Your new digital identity.',
-    'hero.cta1':'Let\'s do it →','hero.cta2':'See work',
+    'hero.desc':'I design and build modern websites and web apps — for companies and sole traders who want to look better than the competition. Fast, without agency overhead.',
+    'hero.cta1':'Calculate price →','hero.cta2':'See work',
     'stat.delivery':'Avg. delivery','stat.guarantee':'Satisfaction guarantee','stat.quote':'Quote in 24 hours',
     'about.tag':'About me',
     'about.title':'Josef Kliment.<br>Not an agency.',
