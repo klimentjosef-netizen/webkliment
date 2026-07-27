@@ -216,12 +216,18 @@
       text-decoration: none;
       font-size: 0.9rem;
       font-weight: 500;
-      transition: all 0.25s;
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 14px -5px rgba(10,9,9,0.45);
     }
-    .btn-primary:hover { background: var(--accent); color: var(--black); transform: translateY(-1px); }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #d8b85e 0%, var(--accent) 100%);
+      color: var(--black);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px -8px rgba(201,168,76,0.6);
+    }
 
     .btn-secondary {
       color: var(--black);
@@ -235,7 +241,7 @@
     .btn-secondary:hover { color: var(--gray); border-color: var(--gray); }
 
     .hero-right {
-      background: var(--black);
+      background: radial-gradient(130% 90% at 82% 8%, rgba(201,168,76,0.16), transparent 55%), var(--black);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -303,11 +309,21 @@
 
     .section-tag {
       font-size: 0.7rem;
-      font-weight: 500;
+      font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--gray);
       margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-tag::before {
+      content: '';
+      width: 22px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
     }
 
     .section-title {
@@ -347,10 +363,11 @@
     .benefit-card {
       padding: 24px;
       border: 1px solid var(--light-gray);
-      border-radius: 8px;
-      transition: border-color 0.2s;
+      border-radius: 12px;
+      background: #fff;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
     }
-    .benefit-card:hover { border-color: var(--accent); }
+    .benefit-card:hover { border-color: var(--accent); box-shadow: 0 16px 34px -20px rgba(10,9,9,0.3); transform: translateY(-3px); }
     .benefit-title { font-weight: 500; margin-bottom: 6px; font-size: 0.95rem; }
     .benefit-desc { font-size: 0.85rem; color: var(--gray); line-height: 1.65; }
 
@@ -395,47 +412,93 @@
     /* PORTFOLIO */
     .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-      margin-top: 60px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
       max-width: 1200px;
       margin-left: auto;
       margin-right: auto;
     }
+    .portfolio-grid.wip { max-width: 1200px; }
 
     .portfolio-card {
-      border-radius: 8px;
+      border-radius: 14px;
       overflow: hidden;
       border: 1px solid var(--light-gray);
-      transition: transform 0.25s, box-shadow 0.25s;
+      background: #fff;
+      transition: transform 0.3s cubic-bezier(.2,.7,.2,1), box-shadow 0.3s, border-color 0.3s;
       display: flex;
       flex-direction: column;
     }
-    .portfolio-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
-
-    .portfolio-img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      display: block;
-      background: var(--light-gray);
+    .portfolio-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 50px -18px rgba(10,9,9,0.28);
+      border-color: rgba(201,168,76,0.55);
     }
 
-    .portfolio-info { padding: 24px; }
-    .portfolio-client { font-size: 0.75rem; color: var(--gray); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
-    .portfolio-name { font-weight: 500; font-size: 1.05rem; margin-bottom: 10px; }
-    .portfolio-desc { font-size: 0.83rem; color: var(--gray); line-height: 1.6; margin-bottom: 16px; }
-    .portfolio-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .portfolio-link { font-size: 0.8rem; font-weight: 500; color: var(--black); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; transition: color 0.2s; }
-    .portfolio-link:hover { color: var(--accent); }
+    .portfolio-media { position: relative; overflow: hidden; display: block; }
+    .portfolio-img {
+      width: 100%;
+      height: 168px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      background: var(--light-gray);
+      transition: transform 0.5s ease;
+    }
+    .portfolio-card:hover .portfolio-img { transform: scale(1.04); }
+
+    /* case study revealed as overlay on hover */
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(10,9,9,0.86), rgba(10,9,9,0.95));
+      display: flex; flex-direction: column; justify-content: center; gap: 8px;
+      padding: 16px 20px;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .portfolio-media:hover .portfolio-overlay { opacity: 1; }
+    .case-row { display: flex; gap: 10px; font-size: 0.72rem; line-height: 1.45; color: rgba(249,246,240,0.88); }
+    .case-label {
+      font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); min-width: 56px; flex-shrink: 0; padding-top: 2px;
+    }
+
+    .wip-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      background: var(--accent); color: var(--black);
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
+      padding: 4px 11px; border-radius: 20px; text-transform: uppercase;
+    }
+
+    .portfolio-info { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+    .portfolio-client { font-size: 0.66rem; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; font-weight: 600; }
+    .portfolio-name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; margin-bottom: 7px; letter-spacing: -0.01em; }
+    .portfolio-desc { font-size: 0.8rem; color: var(--gray); line-height: 1.55; margin-bottom: 14px; }
+    .portfolio-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; margin-top: auto; }
+    .portfolio-link { font-size: 0.78rem; font-weight: 600; color: var(--black); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: gap 0.2s, color 0.2s; }
+    .portfolio-link:hover { color: var(--accent); gap: 9px; }
     .tag {
-      font-size: 0.7rem;
+      font-size: 0.66rem;
       padding: 3px 10px;
       border-radius: 20px;
       background: var(--light-gray);
       color: var(--gray);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
     }
+
+    /* CTA placeholder card */
+    .portfolio-cta-card {
+      border-style: dashed;
+      border-color: rgba(201,168,76,0.5);
+      background: rgba(201,168,76,0.04);
+      display: flex; align-items: center; justify-content: center;
+      min-height: 220px; text-decoration: none;
+    }
+    .portfolio-cta-card:hover { border-color: var(--accent); background: rgba(201,168,76,0.08); }
+    .portfolio-cta-inner { text-align: center; color: var(--gray); padding: 32px; transition: transform 0.25s; }
+    .portfolio-cta-card:hover .portfolio-cta-inner { transform: translateY(-2px); }
+    .portfolio-cta-plus { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 10px; }
+    .portfolio-cta-text { font-size: 0.9rem; color: var(--black); font-weight: 500; }
 
     /* REVIEWS */
     .reviews-section { background: #F0EDE7; }
@@ -544,32 +607,6 @@
     }
 
     /* Case study */
-    .case-study {
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid var(--light-gray);
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-    .case-study-item {
-      display: flex;
-      gap: 10px;
-      font-size: 0.75rem;
-      line-height: 1.5;
-      color: #555;
-    }
-    .case-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--accent);
-      min-width: 62px;
-      padding-top: 1px;
-      flex-shrink: 0;
-    }
-
     .contact-direct {
       margin-top: 48px;
       padding-top: 48px;
@@ -954,7 +991,7 @@
       .about { grid-template-columns: 1fr; gap: 40px; }
       .about-benefits { position: static; }
       .services-grid { grid-template-columns: 1fr; }
-      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
       .reviews-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .lang-bar { padding: 16px 24px; }
@@ -985,6 +1022,11 @@
       .calc-section-layout { grid-template-columns: 1fr; gap: 40px; }
       .calc-section-right { position: static; }
       .self-pricing-card { padding: 20px; }
+    }
+    @media (max-width: 560px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-img { height: 200px; }
+      .portfolio-overlay { display: none; }
     }
     /* Cookie banner */
     .cookie-bar {
@@ -1404,30 +1446,108 @@
     <div class="section-tag" data-i18n="portfolio.tag">Portfolio</div>
     <h2 class="section-title" data-i18n="portfolio.title">Ukázky prací.</h2>
     <div class="portfolio-grid">
-      <div class="portfolio-card">
-        <a href="https://mnai-nine.vercel.app" target="_blank" rel="noopener">
-          <img src="portfolio/mnai.png" alt="M&Ai, M&A poradenství" class="portfolio-img" />
+
+      <!-- M&Ai -->
+      <article class="portfolio-card">
+        <a class="portfolio-media" href="https://www.mnai.cz" target="_blank" rel="noopener">
+          <img src="portfolio/mnai.png" alt="M&Ai, platforma pro fúze a akvizice" class="portfolio-img" loading="lazy" />
+          <div class="portfolio-overlay">
+            <div class="case-row"><span class="case-label">Problém</span><span>Klient potřeboval platformu pro M&A transakce s AI párováním. Nic hotového nevyhovovalo.</span></div>
+            <div class="case-row"><span class="case-label">Řešení</span><span>Webová aplikace s AI modulem, valuační kalkulačkou e-shopů a klientským portálem.</span></div>
+            <div class="case-row"><span class="case-label">Výsledek</span><span>Platforma i kalkulačka běží naostro, dostupné z klientského portálu.</span></div>
+          </div>
         </a>
         <div class="portfolio-info">
-          <div class="portfolio-client" data-i18n="p1.client">Fúze a akvizice</div>
+          <div class="portfolio-client" data-i18n="p1.client">Fúze a akvizice · AI</div>
           <div class="portfolio-name">M&Ai</div>
-          <div class="portfolio-desc" data-i18n="p1.desc">Platforma pro nákup a prodej firem s AI analýzou a automatickým párováním příležitostí.</div>
+          <div class="portfolio-desc" data-i18n="p1.desc">Platforma pro nákup a prodej firem s AI analýzou. Součástí je valuační kalkulačka e-shopů a klientský portál.</div>
           <div class="portfolio-tags">
             <span class="tag">AI integrace</span>
-            <span class="tag">Blog</span>
-            <span class="tag">Vícejazyčný</span>
+            <span class="tag">Kalkulačka</span>
+            <span class="tag">Portál</span>
           </div>
-          <a href="https://mnai-nine.vercel.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
-          <div class="case-study">
-            <div class="case-study-item"><span class="case-label">Problém</span><span>Klient potřeboval platformu pro M&A transakce s AI párováním. Žádné hotové řešení nevyhovovalo.</span></div>
-            <div class="case-study-item"><span class="case-label">Řešení</span><span>Vlastní webová aplikace s AI modulem, automatickým párováním a vícejazyčnou podporou.</span></div>
-            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Platforma spuštěná v termínu, připravená pro první aktivní uživatele.</span></div>
-          </div>
+          <a href="https://www.mnai.cz" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.view">Zobrazit web →</a>
         </div>
-      </div>
-      <div class="portfolio-card">
-        <a href="https://maiden-services.vercel.app" target="_blank" rel="noopener">
-          <img src="portfolio/maiden.png" alt="Maiden Services" class="portfolio-img" />
+      </article>
+
+      <!-- Kliments -->
+      <article class="portfolio-card">
+        <a class="portfolio-media" href="https://www.kliments.cz" target="_blank" rel="noopener">
+          <img src="portfolio/kliments.png" alt="Kliments, externí finanční ředitel" class="portfolio-img" loading="lazy" />
+          <div class="portfolio-overlay">
+            <div class="case-row"><span class="case-label">Problém</span><span>Finanční ředitel měnil koncept — z poradenství na komplexní službu s vlastním portálem.</span></div>
+            <div class="case-row"><span class="case-label">Řešení</span><span>Prémiový web s klientským portálem, případovými studiemi a přístupem k firemním číslům online.</span></div>
+            <div class="case-row"><span class="case-label">Výsledek</span><span>Web i portál působí na úrovni služby a odlišují klienta od konkurence.</span></div>
+          </div>
+        </a>
+        <div class="portfolio-info">
+          <div class="portfolio-client" data-i18n="p3.client">Externí finanční ředitel</div>
+          <div class="portfolio-name">Kliments</div>
+          <div class="portfolio-desc" data-i18n="p3.desc">Prémiový web finančního ředitele s klientským portálem, případovými studiemi a přístupem k firemním financím online.</div>
+          <div class="portfolio-tags">
+            <span class="tag">Finanční portál</span>
+            <span class="tag">Případové studie</span>
+            <span class="tag">Prémiový design</span>
+          </div>
+          <a href="https://www.kliments.cz" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.view">Zobrazit web →</a>
+        </div>
+      </article>
+
+      <!-- Strop Design -->
+      <article class="portfolio-card">
+        <a class="portfolio-media" href="https://www.stropdesign.cz" target="_blank" rel="noopener">
+          <img src="portfolio/stropdesign.png" alt="Strop Design, napínané stropy" class="portfolio-img" loading="lazy" />
+          <div class="portfolio-overlay">
+            <div class="case-row"><span class="case-label">Problém</span><span>Montážní firma napínaných stropů potřebovala web, který získává poptávky po celé ČR.</span></div>
+            <div class="case-row"><span class="case-label">Řešení</span><span>Prezentační web s kalkulačkou ceny, galerií realizací, blogem a dvojjazyčnou verzí.</span></div>
+            <div class="case-row"><span class="case-label">Výsledek</span><span>Zákazník získá orientační cenu ještě před kontaktem — méně dotazů, kvalitnější poptávky.</span></div>
+          </div>
+        </a>
+        <div class="portfolio-info">
+          <div class="portfolio-client" data-i18n="strop.client">Interiéry · Napínané stropy</div>
+          <div class="portfolio-name">Strop Design</div>
+          <div class="portfolio-desc" data-i18n="strop.desc">Web pro montážní firmu napínaných stropů. Kalkulačka ceny, galerie realizací, blog a dvojjazyčná verze.</div>
+          <div class="portfolio-tags">
+            <span class="tag">Kalkulačka</span>
+            <span class="tag">Galerie</span>
+            <span class="tag">Blog</span>
+          </div>
+          <a href="https://www.stropdesign.cz" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.view">Zobrazit web →</a>
+        </div>
+      </article>
+
+      <!-- PHMarket -->
+      <article class="portfolio-card">
+        <a class="portfolio-media" href="https://www.phmarket.cz" target="_blank" rel="noopener">
+          <img src="portfolio/phmarket.png" alt="PHMarket, aplikace pro levnější tankování" class="portfolio-img" loading="lazy" />
+          <div class="portfolio-overlay">
+            <div class="case-row"><span class="case-label">Problém</span><span>Fintech projekt potřeboval web, který vysvětlí appku na levnější tankování a přivede stahování.</span></div>
+            <div class="case-row"><span class="case-label">Řešení</span><span>Web s mapou partnerských stanic, přehledem úspor, blogem a jasnou cestou ke stažení aplikace.</span></div>
+            <div class="case-row"><span class="case-label">Výsledek</span><span>Přehledná prezentace s reálnými čísly úspor — přes 16 000 aktivních uživatelů.</span></div>
+          </div>
+        </a>
+        <div class="portfolio-info">
+          <div class="portfolio-client" data-i18n="ph.client">FinTech · Mobilní aplikace</div>
+          <div class="portfolio-name">PHMarket</div>
+          <div class="portfolio-desc" data-i18n="ph.desc">Web a aplikace pro levnější tankování. Mapa partnerských stanic, slevové kódy a přehled úspor.</div>
+          <div class="portfolio-tags">
+            <span class="tag">Web + aplikace</span>
+            <span class="tag">Mapa</span>
+            <span class="tag">Blog</span>
+          </div>
+          <a href="https://www.phmarket.cz" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.view">Zobrazit web →</a>
+        </div>
+      </article>
+
+      <!-- Maiden Services -->
+      <article class="portfolio-card">
+        <a class="portfolio-media" href="https://maiden-services.vercel.app" target="_blank" rel="noopener">
+          <img src="portfolio/maiden.png" alt="Maiden Services" class="portfolio-img" loading="lazy" />
+          <div class="portfolio-overlay">
+            <div class="case-row"><span class="case-label">Problém</span><span>Účetní firma získávala klienty jen přes doporučení a neměla žádnou online prezentaci.</span></div>
+            <div class="case-row"><span class="case-label">Řešení</span><span>Přehledný prezentační web s jasným CTA, sekcí služeb a kontaktním formulářem.</span></div>
+            <div class="case-row"><span class="case-label">Výsledek</span><span>Profesionální online vizitka — první poptávky přišly týden po spuštění.</span></div>
+          </div>
         </a>
         <div class="portfolio-info">
           <div class="portfolio-client" data-i18n="p2.client">Účetnictví a poradenství</div>
@@ -1438,38 +1558,19 @@
             <span class="tag">Scroll animace</span>
             <span class="tag">Formulář</span>
           </div>
-          <a href="https://maiden-services.vercel.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
-          <div class="case-study">
-            <div class="case-study-item"><span class="case-label">Problém</span><span>Účetní firma získávala klienty výhradně přes doporučení a neměla žádnou online prezentaci.</span></div>
-            <div class="case-study-item"><span class="case-label">Řešení</span><span>Přehledný prezentační web s jasným CTA, sekcí služeb a kontaktním formulářem pro přímé poptávky.</span></div>
-            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Firma má profesionální online vizitku a první poptávky přišly ještě týden po spuštění.</span></div>
-          </div>
+          <a href="https://maiden-services.vercel.app" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.view">Zobrazit web →</a>
         </div>
-      </div>
-      <div class="portfolio-card">
-        <a href="https://kliments.vercel.app" target="_blank" rel="noopener">
-          <img src="portfolio/kliments.png" alt="Kliments, finanční poradenství" class="portfolio-img" />
-        </a>
-        <div class="portfolio-info">
-          <div class="portfolio-client" data-i18n="p3.client">Finanční poradenství</div>
-          <div class="portfolio-name">Kliments</div>
-          <div class="portfolio-desc" data-i18n="p3.desc">Prémiový web finančního poradce s vlastním animovaným kurzorem a plynulými přechody sekcí.</div>
-          <div class="portfolio-tags">
-            <span class="tag">Prémiový design</span>
-            <span class="tag">Custom cursor</span>
-            <span class="tag">Animace</span>
+      </article>
+
+      <!-- The 33 Tour -->
+      <article class="portfolio-card">
+        <a class="portfolio-media" href="https://klimentjosef-netizen.github.io/the-33-tour/" target="_blank" rel="noopener">
+          <img src="portfolio/tour33.png" alt="The 33 Tour, event microsite" class="portfolio-img" loading="lazy" />
+          <div class="portfolio-overlay">
+            <div class="case-row"><span class="case-label">Problém</span><span>Klasická pozvánka nestačila — cílem byl zážitek ještě před samotnou akcí.</span></div>
+            <div class="case-row"><span class="case-label">Řešení</span><span>Pět animovaných scén ve stylu tour-stránky kapely s RSVP systémem a vlastní atmosférou.</span></div>
+            <div class="case-row"><span class="case-label">Výsledek</span><span>100% digitální organizace akce, web byl vnímán jako součást zážitku.</span></div>
           </div>
-          <a href="https://kliments.vercel.app" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
-          <div class="case-study">
-            <div class="case-study-item"><span class="case-label">Problém</span><span>Finanční poradce potřeboval web, který odpovídá prémiové úrovni jeho služeb a odliší ho od konkurence.</span></div>
-            <div class="case-study-item"><span class="case-label">Řešení</span><span>Prémiový design s vlastním animovaným kurzorem, plynulými přechody sekcí a silnou vizuální identitou.</span></div>
-            <div class="case-study-item"><span class="case-label">Výsledek</span><span>Web, který buduje důvěru hned na první pohled a odráží kvalitu poradenství klienta.</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="portfolio-card">
-        <a href="https://klimentjosef-netizen.github.io/the-33-tour/" target="_blank" rel="noopener">
-          <img src="portfolio/tour33.png" alt="The 33 Tour, event microsite" class="portfolio-img" />
         </a>
         <div class="portfolio-info">
           <div class="portfolio-client" data-i18n="p4.client">Event a zážitek</div>
@@ -1477,64 +1578,106 @@
           <div class="portfolio-desc" data-i18n="p4.desc">Interaktivní pozvánka na narozeninovou party. Pět animovaných obrazovek, atmosféra jako od agentury.</div>
           <div class="portfolio-tags">
             <span class="tag">Kreativní microsite</span>
-            <span class="tag">Multi-screen app</span>
+            <span class="tag">Multi-screen</span>
             <span class="tag">Animace</span>
           </div>
-          <a href="https://klimentjosef-netizen.github.io/the-33-tour/" target="_blank" rel="noopener" class="portfolio-link">Zobrazit web →</a>
-          <div class="case-study">
-            <div class="case-study-item"><span class="case-label">Problém</span><span>Klasická pozvánka na oslavu nestačila, cílem bylo vytvořit zážitek ještě před samotnou akcí.</span></div>
-            <div class="case-study-item"><span class="case-label">Řešení</span><span>Pět animovaných scén ve stylu tour-stránky kapely s RSVP systémem a vlastní atmosférou.</span></div>
-            <div class="case-study-item"><span class="case-label">Výsledek</span><span>100% digitální organizace akce, hosté vnímali web jako součást celého zážitku.</span></div>
-          </div>
+          <a href="https://klimentjosef-netizen.github.io/the-33-tour/" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.view">Zobrazit web →</a>
         </div>
-      </div>
-      <div class="portfolio-card" style="border-style: dashed; display:flex; align-items:center; justify-content:center; min-height:200px;">
-        <div style="text-align:center; color:var(--gray); padding:40px;">
-          <div style="font-size:2rem; margin-bottom:12px;">+</div>
-          <div style="font-size:0.85rem;" data-i18n="portfolio.cta">Váš projekt zde?</div>
+      </article>
+
+      <!-- CTA placeholder -->
+      <a href="#kontakt" class="portfolio-card portfolio-cta-card">
+        <div class="portfolio-cta-inner">
+          <div class="portfolio-cta-plus">+</div>
+          <div class="portfolio-cta-text" data-i18n="portfolio.cta">Váš projekt zde?</div>
         </div>
-      </div>
+      </a>
+
     </div>
 
     <!-- Ve vývoji -->
-    <div style="margin-top: 64px;">
-      <div class="section-tag" style="margin-bottom: 20px;" data-i18n="portfolio.wip">Aktuálně ve vývoji</div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px;">
-      <div class="portfolio-card">
-        <div style="position:relative;">
-          <img src="portfolio/valuator.png" alt="Valuator" class="portfolio-img" />
-          <div style="position:absolute;top:12px;left:12px;background:var(--accent);color:var(--black);font-size:0.68rem;font-weight:600;letter-spacing:0.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Ve vývoji</div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-client" data-i18n="p5.client">Webová aplikace</div>
-          <div class="portfolio-name">Valuator</div>
-          <div class="portfolio-desc" data-i18n="p5.desc">Nástroj pro valuaci e-commerce projektů. Zadáte data, aplikace vypočítá odhadovanou hodnotu vašeho obchodu.</div>
-          <div class="portfolio-tags">
-            <span class="tag">Web aplikace</span>
-            <span class="tag">E-commerce</span>
-            <span class="tag">Kalkulačka</span>
+    <div style="margin-top: 72px;">
+      <div class="section-tag" style="margin-bottom: 4px;" data-i18n="portfolio.wip">Aktuálně ve vývoji</div>
+      <div class="portfolio-grid wip" style="margin-top: 28px;">
+
+        <!-- GoLDost -->
+        <article class="portfolio-card">
+          <a class="portfolio-media" href="https://goldost-portal.vercel.app/web" target="_blank" rel="noopener">
+            <span class="wip-badge" data-i18n="wip.badge">Ve vývoji</span>
+            <img src="portfolio/goldost.png" alt="GoLDost, portál finančního týmu" class="portfolio-img" loading="lazy" />
+          </a>
+          <div class="portfolio-info">
+            <div class="portfolio-client" data-i18n="gold.client">Finanční poradenství</div>
+            <div class="portfolio-name">GoLDost</div>
+            <div class="portfolio-desc" data-i18n="gold.desc">Firemní a náborový portál pro tým finančních poradců. Blog, kariérní sekce a interní nástroje.</div>
+            <div class="portfolio-tags">
+              <span class="tag">Portál</span>
+              <span class="tag">Nábor</span>
+              <span class="tag">Blog</span>
+            </div>
+            <a href="https://goldost-portal.vercel.app/web" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.preview">Náhled →</a>
           </div>
-        </div>
-      </div>
-      <div class="portfolio-card">
-        <div style="position:relative;">
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
-            <img src="portfolio/bozatmv.png" alt="BOZA reko, tmavá verze" style="width:100%; height:240px; object-fit:cover; object-position:left top; display:block;" />
-            <img src="portfolio/bozasv.png" alt="BOZA reko, světlá verze" style="width:100%; height:240px; object-fit:cover; object-position:left top; display:block;" />
+        </article>
+
+        <!-- vPlusu -->
+        <article class="portfolio-card">
+          <a class="portfolio-media" href="https://vplusu.eu/" target="_blank" rel="noopener">
+            <span class="wip-badge" data-i18n="wip.badge">Ve vývoji</span>
+            <img src="portfolio/vplusu.png" alt="vPlusu, aplikace pro osobní finance" class="portfolio-img" loading="lazy" />
+          </a>
+          <div class="portfolio-info">
+            <div class="portfolio-client" data-i18n="vplusu.client">Osobní finance · AI</div>
+            <div class="portfolio-name">vPlusu</div>
+            <div class="portfolio-desc" data-i18n="vplusu.desc">Aplikace pro řízení osobních a rodinných financí. Nahrajete výpis a AI sestaví přehled i plán.</div>
+            <div class="portfolio-tags">
+              <span class="tag">Web aplikace</span>
+              <span class="tag">AI</span>
+              <span class="tag">Osobní finance</span>
+            </div>
+            <a href="https://vplusu.eu/" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.preview">Náhled →</a>
           </div>
-          <div style="position:absolute;top:12px;left:12px;background:var(--accent);color:var(--black);font-size:0.68rem;font-weight:600;letter-spacing:0.08em;padding:4px 10px;border-radius:20px;text-transform:uppercase;">Ve vývoji</div>
-        </div>
-        <div class="portfolio-info">
-          <div class="portfolio-client" data-i18n="boza.client">Stavební rekonstrukce</div>
-          <div class="portfolio-name">BOZA reko s.r.o.</div>
-          <div class="portfolio-desc" data-i18n="boza.desc">Web pro stavební firmu, dvě barevné varianty designu, kalkulačka ceny a galerie realizací.</div>
-          <div class="portfolio-tags">
-            <span class="tag">Dark &amp; Light varianta</span>
-            <span class="tag">Kalkulačka</span>
-            <span class="tag">Galerie</span>
+        </article>
+
+        <!-- Alibi -->
+        <article class="portfolio-card">
+          <a class="portfolio-media" href="https://detektivka-six.vercel.app/" target="_blank" rel="noopener">
+            <span class="wip-badge" data-i18n="wip.badge">Ve vývoji</span>
+            <img src="portfolio/detektivka.png" alt="Alibi, kooperativní detektivní hra" class="portfolio-img" loading="lazy" />
+          </a>
+          <div class="portfolio-info">
+            <div class="portfolio-client" data-i18n="alibi.client">Hra · Zážitek</div>
+            <div class="portfolio-name">Alibi</div>
+            <div class="portfolio-desc" data-i18n="alibi.desc">Kooperativní detektivní hra pro 2–6 hráčů. Real-time herní místnosti, každý hraje ze svého telefonu.</div>
+            <div class="portfolio-tags">
+              <span class="tag">Multiplayer</span>
+              <span class="tag">Real-time</span>
+              <span class="tag">Herní web</span>
+            </div>
+            <a href="https://detektivka-six.vercel.app/" target="_blank" rel="noopener" class="portfolio-link" data-i18n="portfolio.preview">Náhled →</a>
           </div>
-        </div>
-      </div>
+        </article>
+
+        <!-- BOZA reko -->
+        <article class="portfolio-card">
+          <div class="portfolio-media">
+            <span class="wip-badge" data-i18n="wip.badge">Ve vývoji</span>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:3px;">
+              <img src="portfolio/bozatmv.png" alt="BOZA reko, tmavá verze" style="width:100%; height:168px; object-fit:cover; object-position:left top; display:block;" loading="lazy" />
+              <img src="portfolio/bozasv.png" alt="BOZA reko, světlá verze" style="width:100%; height:168px; object-fit:cover; object-position:left top; display:block;" loading="lazy" />
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <div class="portfolio-client" data-i18n="boza.client">Stavební rekonstrukce</div>
+            <div class="portfolio-name">BOZA reko s.r.o.</div>
+            <div class="portfolio-desc" data-i18n="boza.desc">Web pro stavební firmu, dvě barevné varianty designu, kalkulačka ceny a galerie realizací.</div>
+            <div class="portfolio-tags">
+              <span class="tag">Dark &amp; Light</span>
+              <span class="tag">Kalkulačka</span>
+              <span class="tag">Galerie</span>
+            </div>
+          </div>
+        </article>
+
       </div><!-- /wip grid -->
     </div>
   </div>
@@ -1905,12 +2048,17 @@
     'calc.price.label':'Estimated price','calc.price.note':'Non-binding estimate. Exact quote within 24 hours.',
     'calc.cta':'Request this project →',
     'portfolio.tag':'Portfolio','portfolio.title':'Selected work.',
-    'p1.client':'Mergers & acquisitions','p1.desc':'Platform for buying and selling companies with AI analysis and automatic opportunity matching.',
+    'portfolio.view':'View website →','portfolio.preview':'Preview →',
+    'p1.client':'Mergers & acquisitions · AI','p1.desc':'A platform for buying and selling companies with AI analysis. Includes an e-shop valuation calculator and a client portal.',
     'p2.client':'Accounting & advisory','p2.desc':'Presentation website for an accounting firm, clean, fast and focused on acquiring new clients.',
-    'p3.client':'Financial advisory','p3.desc':'Premium website for a financial advisor with custom animated cursor and smooth section transitions.',
+    'p3.client':'External CFO','p3.desc':'Premium website for an external CFO with a client portal, case studies and online access to company finances.',
     'p4.client':'Event & experience','p4.desc':'Interactive invitation to a birthday party. Five animated screens, agency-level atmosphere.',
-    'portfolio.cta':'Your project here?','portfolio.wip':'In development',
-    'p5.client':'Web application','p5.desc':'E-commerce valuation tool. Enter your store data and the app calculates an estimated market value.',
+    'strop.client':'Interiors · Stretch ceilings','strop.desc':'Website for a stretch-ceiling installation company. Price calculator, project gallery, blog and a bilingual version.',
+    'ph.client':'FinTech · Mobile app','ph.desc':'Website and app for cheaper refuelling. Map of partner stations, discount codes and a savings overview.',
+    'portfolio.cta':'Your project here?','portfolio.wip':'In development','wip.badge':'In development',
+    'gold.client':'Financial advisory','gold.desc':'Company and recruitment portal for a team of financial advisors. Blog, careers section and internal tools.',
+    'vplusu.client':'Personal finance · AI','vplusu.desc':'App for managing personal and family finances. Upload a statement and AI builds an overview and a plan.',
+    'alibi.client':'Game · Experience','alibi.desc':'Cooperative detective game for 2–6 players. Real-time game rooms, everyone plays from their own phone.',
     'boza.client':'Construction','boza.desc':'Website for a construction company, two color design variants, price calculator and project gallery.',
     'contact.tag':'Contact','contact.title':'Got a project?<br>Let\'s do it.',
     'contact.subtitle':'Tell me what you need. I\'ll reply within 24 hours with an exact price and timeline.',
